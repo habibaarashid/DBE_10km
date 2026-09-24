@@ -10,7 +10,7 @@ from typing import Any
 
 import pandas as pd
 
-from roadmapper import schema
+from dbe import schema
 
 log = logging.getLogger(__name__)
 

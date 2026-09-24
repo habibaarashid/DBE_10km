@@ -1,6 +1,6 @@
 import pytest
 
-from roadmapper.slk_join import (
+from dbe.slk_join import (
     SlkSpan,
     cwy_compatible,
     dominant_value,

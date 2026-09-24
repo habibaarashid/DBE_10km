@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from roadmapper import schema
+from dbe import schema
 
 PROVIDED = Path("data/Road_Network - Road_Network.csv")
 EXTRACTED = Path("output/curtin_10km/roads.csv")

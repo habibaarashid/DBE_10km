@@ -8,17 +8,17 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any, Protocol
 
-from roadmapper import __version__, schema
-from roadmapper.enrich import EnrichIndex, enrich_segment
-from roadmapper.geometry import LocalProjection, geojson_to_line, iter_vertices, segment_metrics
-from roadmapper.mrwa_client import (
+from dbe import __version__, schema
+from dbe.enrich import EnrichIndex, enrich_segment
+from dbe.geometry import LocalProjection, geojson_to_line, iter_vertices, segment_metrics
+from dbe.mrwa_client import (
     LAYER_HIERARCHY,
     LAYER_PAVEMENT,
     LAYER_ROAD_NETWORK,
     LAYER_SPEED,
     normalise_properties,
 )
-from roadmapper.slk_join import span_from_properties
+from dbe.slk_join import span_from_properties
 
 log = logging.getLogger(__name__)
 
@@ -193,7 +193,7 @@ def extract(
         "datum_note": schema.DATUM_NOTE,
         "osm_enabled": False,  # OSM enrichment is not implemented; see the Segment 5 skip decision
         "osm_attribution": None,
-        "roadmapper_version": __version__,
+        "dbe_version": __version__,
     }
     log.info("kept %s of %s segments (%s vertices)", len(roads), len(feats17), len(vertices))
     return ExtractResult(roads, vertices, metadata)

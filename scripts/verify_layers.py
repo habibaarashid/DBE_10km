@@ -23,7 +23,7 @@ def main() -> int:
             f"{BASE}/{layer_id}",
             params={"f": "pjson"},
             timeout=60,
-            headers={"User-Agent": "RoadMapper/0.1 schema check"},
+            headers={"User-Agent": "DBE/0.1 schema check"},
         )
         r.raise_for_status()
         meta = r.json()

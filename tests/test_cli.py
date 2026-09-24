@@ -8,7 +8,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-from roadmapper import cli, schema
+from dbe import cli, schema
 from tests.conftest import FixtureSource
 
 
@@ -117,7 +117,7 @@ def test_plot_failure_is_best_effort(tmp_path, fixture_source, monkeypatch, capl
     def _boom(*args, **kwargs):
         raise RuntimeError("boom")
 
-    monkeypatch.setattr("roadmapper.plot.render_qa_plot", _boom)
+    monkeypatch.setattr("dbe.plot.render_qa_plot", _boom)
     out = tmp_path / "run"
     # A stale PNG from an earlier run into this same --out (or a truncated one from a savefig
     # that died partway) must not survive a failed plot: it would no longer be a rendering of
@@ -146,9 +146,9 @@ def test_plot_failure_is_best_effort(tmp_path, fixture_source, monkeypatch, capl
 
 
 def test_plot_failure_when_matplotlib_absent(tmp_path, fixture_source, monkeypatch, caplog):
-    """Simulate matplotlib/roadmapper.plot being unimportable; the run must still succeed."""
+    """Simulate matplotlib/dbe.plot being unimportable; the run must still succeed."""
     monkeypatch.setattr(cli, "MRWAClient", lambda **kwargs: fixture_source)
-    monkeypatch.setitem(sys.modules, "roadmapper.plot", None)
+    monkeypatch.setitem(sys.modules, "dbe.plot", None)
     out = tmp_path / "run"
     with caplog.at_level("WARNING"):
         rc = cli.main(
@@ -318,8 +318,8 @@ def test_verbose_does_not_leak_matplotlib_debug_noise(tmp_path, fixture_source, 
     assert level_set_by_main >= logging.WARNING, "main() must quieten matplotlib under -v"
     matplotlib_records = [r for r in caplog.records if r.name.startswith("matplotlib")]
     assert all(r.levelno >= logging.WARNING for r in matplotlib_records)
-    roadmapper_records = [r for r in caplog.records if r.name.startswith("roadmapper")]
-    assert any(r.levelno in (logging.DEBUG, logging.INFO) for r in roadmapper_records)
+    dbe_records = [r for r in caplog.records if r.name.startswith("dbe")]
+    assert any(r.levelno in (logging.DEBUG, logging.INFO) for r in dbe_records)
 
 
 def test_osm_help_text_says_it_is_not_implemented():

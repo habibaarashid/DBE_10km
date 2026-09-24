@@ -1,4 +1,4 @@
-from roadmapper.mrwa_client import normalise_properties
+from dbe.mrwa_client import normalise_properties
 from tests.conftest import load_fixture
 
 EXPECTED_17 = [

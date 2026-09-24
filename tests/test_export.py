@@ -4,8 +4,8 @@ import json
 import pytest
 from openpyxl import load_workbook
 
-from roadmapper import schema
-from roadmapper.export import EXCEL_MAX_CELL_CHARS, csv_to_xlsx, write_csv, write_json
+from dbe import schema
+from dbe.export import EXCEL_MAX_CELL_CHARS, csv_to_xlsx, write_csv, write_json
 
 
 def _road_row(i, wkt="LINESTRING (115.89 -32, 115.9 -32)"):

@@ -1,5 +1,5 @@
-from roadmapper import schema
-from roadmapper.enrich import ENRICH_COLUMNS
+from dbe import schema
+from dbe.enrich import ENRICH_COLUMNS
 
 ORIGINAL = [
     "ROAD",

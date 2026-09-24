@@ -1,5 +1,5 @@
-import roadmapper
+import dbe
 
 
 def test_version_string():
-    assert roadmapper.__version__ == "0.1.0"
+    assert dbe.__version__ == "0.1.0"

@@ -2,9 +2,9 @@ import copy
 
 import pytest
 
-from roadmapper import schema
-from roadmapper.extract import ExtractResult, NoRoadsFound, extract
-from roadmapper.geometry import LocalProjection
+from dbe import schema
+from dbe.extract import ExtractResult, NoRoadsFound, extract
+from dbe.geometry import LocalProjection
 from tests.conftest import FixtureSource
 
 

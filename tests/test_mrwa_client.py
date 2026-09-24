@@ -4,8 +4,8 @@ from pathlib import Path
 import pytest
 import requests
 
-import roadmapper.mrwa_client
-from roadmapper.mrwa_client import (
+import dbe.mrwa_client
+from dbe.mrwa_client import (
     LAYER_ROAD_NETWORK,
     MRWAClient,
     MRWAError,
@@ -179,7 +179,7 @@ def test_empty_page_terminates_even_with_exceeded_flag_set():
 
 
 def test_max_pages_guard_raises_mrwa_error(monkeypatch):
-    monkeypatch.setattr(roadmapper.mrwa_client, "MAX_PAGES", 2)
+    monkeypatch.setattr(dbe.mrwa_client, "MAX_PAGES", 2)
     session = FakeSession([_page(range(3), exceeded=True), _page(range(3, 6), exceeded=True)])
     client = MRWAClient(session=session, page_size=3, sleep_s=0)
     with pytest.raises(MRWAError) as exc:

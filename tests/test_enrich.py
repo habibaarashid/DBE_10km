@@ -1,6 +1,6 @@
 import pytest
 
-from roadmapper.enrich import ENRICH_COLUMNS, EnrichIndex, enrich_segment
+from dbe.enrich import ENRICH_COLUMNS, EnrichIndex, enrich_segment
 
 EXPECTED_COLUMNS = [
     "ROAD_HIERARCHY", "SPEED_LIMIT", "TOTAL_PAVE_WIDTH_M", "TOTAL_SEAL_WIDTH_M", "TRAFFICABLE_SURF_WIDTH_M",

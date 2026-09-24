@@ -1,7 +1,7 @@
 import pytest
 
-from roadmapper.geometry import LocalProjection
-from roadmapper.mrwa_client import LAYER_ROAD_NETWORK, MRWAClient
+from dbe.geometry import LocalProjection
+from dbe.mrwa_client import LAYER_ROAD_NETWORK, MRWAClient
 
 pytestmark = pytest.mark.network
 

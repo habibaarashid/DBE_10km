@@ -1,4 +1,4 @@
-# RoadMapper
+# DBE
 
 Extracts every road segment inside a circle — a centre point and a radius in kilometres — from Main
 Roads Western Australia (MRWA) open data, with full lat/lon geometry and road attributes (width where
@@ -11,7 +11,7 @@ Legal Speed Limit layers) — no Google Maps APIs are used.
 ```bash
 uv sync   # creates .venv and installs dependencies (Python >= 3.11; uv installs 3.12 if needed)
 
-uv run roadmapper extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km
+uv run dbe extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km
 ```
 
 This is the project's reference run: a 10 km circle around Curtin University. It queries the live MRWA
@@ -27,7 +27,7 @@ when the data was fetched. For current data, delete `cache/` or point `--cache-d
 ## Usage
 
 ```
-roadmapper extract --lat LAT --lon LON --radius-km KM --out DIR [--cache-dir DIR] [--no-xlsx] [--no-plot] [--osm] [-v]
+dbe extract --lat LAT --lon LON --radius-km KM --out DIR [--cache-dir DIR] [--no-xlsx] [--no-plot] [--osm] [-v]
 ```
 
 | Flag | Meaning |
@@ -43,7 +43,7 @@ roadmapper extract --lat LAT --lon LON --radius-km KM --out DIR [--cache-dir DIR
 | `-v` / `--verbose` | debug-level logging to stderr (default is INFO) |
 
 ```
-roadmapper to-xlsx --roads FILE --vertices FILE --metadata FILE --out FILE
+dbe to-xlsx --roads FILE --vertices FILE --metadata FILE --out FILE
 ```
 
 | Flag | Meaning |
@@ -67,7 +67,7 @@ From the reference Curtin 10 km run (`output/curtin_10km/`):
 | `roads_vertices.csv` | 7.6 MB (7,982,007 bytes) | 85,122 vertices, one row per vertex of every segment's geometry |
 | `metadata.json` | 1.4 KB (1,445 bytes) | run parameters, envelope, counts, data source, licence, datum note |
 | `roads.xlsx` | 10.5 MB (11,049,054 bytes) | the three sheets below, built by reading the two CSVs back in (the workbook is built by reading the CSVs back, not from a separate in-memory export: every text cell is identical, and every numeric cell agrees to within 1e-14 relative — the workbook writer keeps 16 significant digits, so a 17-digit coordinate cannot round-trip exactly) |
-| `qa_plot.png` | 1.2 MB | a map of every segment, coloured by road type, with the query circle drawn dashed. Built by reading `roads.csv` and `metadata.json` back from disk, so it shows what was actually written. The road-type colours were checked with a colour-blindness validator for a map, where any road type can sit beside any other; see the comment at the top of `roadmapper/plot.py`. |
+| `qa_plot.png` | 1.2 MB | a map of every segment, coloured by road type, with the query circle drawn dashed. Built by reading `roads.csv` and `metadata.json` back from disk, so it shows what was actually written. The road-type colours were checked with a colour-blindness validator for a map, where any road type can sit beside any other; see the comment at the top of `dbe/plot.py`. |
 
 **On a successful run, every file in `--out` belongs to that run.** That is the rule, and three things enforce it.
 The map is drawn after the CSVs and metadata are safely on disk, and it is best-effort: if drawing fails for any
@@ -92,7 +92,7 @@ limit; the `roads` sheet is not (see "Known limits").
 
 ## Column dictionary
 
-Column names and order come from `roadmapper/schema.py`, the single source of truth — this list mirrors
+Column names and order come from `dbe/schema.py`, the single source of truth — this list mirrors
 it exactly. `roads.csv` / the `roads` sheet has 53 columns in five groups; `roads_vertices.csv` / the
 `vertices` sheet has the 9 columns listed last.
 
@@ -173,8 +173,8 @@ see "Known limits" for the tie-break rule).
 
 ### OpenStreetMap columns (5) — always blank in this build
 
-OSM enrichment was specified in the project plan (Segment 5, as `roadmapper/osm_client.py` and
-`roadmapper/osm_match.py`) but was never built — Segment 5 was skipped before either file was written,
+OSM enrichment was specified in the project plan (Segment 5, as `dbe/osm_client.py` and
+`dbe/osm_match.py`) but was never built — Segment 5 was skipped before either file was written,
 on a measurement, not abandoned mid-implementation. See "Width" for why. All five columns are always
 blank; the `--osm` flag that would have populated them refuses instead of running.
 
@@ -349,6 +349,6 @@ uv run --no-sync ruff check .           # lint
 uv run --no-sync python scripts/record_fixtures.py
 
 # Re-render the map for an existing output directory, e.g. after changing the styling in
-# roadmapper/plot.py. (`extract` already writes it automatically; this is only for re-drawing.)
+# dbe/plot.py. (`extract` already writes it automatically; this is only for re-drawing.)
 uv run --no-sync python scripts/qa_plot.py --out-dir output/curtin_10km
 ```

@@ -1,4 +1,4 @@
-# RoadMapper — handoff for the final review
+# DBE — handoff for the final review
 
 > **Superseded in part by the Fable review of 2026-09-24 — see `fable_review.md`.** The numbers below are Gate C's. The review changed the inclusion test (the inscribed 256-gon excluded two streets 9,999.9 m from the centre), so the reference run is now **21,645 segments / 85,122 vertices / 21,560 of 21,560 reconciled**, and the suite is 103 offline tests plus 3 data-dependent and 1 network. §6 item 2 ("re-run the polygon id diff") could not have found this: it queries the same polygon.
 
@@ -113,5 +113,5 @@ Ranked by where a defect would be most costly, not by likelihood.
 - Source verification: `docs/task_docs/source_verification.md`
 - User-facing docs: `README.md` — 53 output columns and 9 vertex columns, each defined
 - Origin brief: `docs/task_docs/init_prompt.md`
-- Remote: `git@github.com:habibaarashid/RoadMapper.git` (private)
-- Vault hub: `Vault/05-Projects/RoadMapper/RoadMapper.md`, with three decision notes under `decisions/`
+- Remote: `git@github.com:habibaarashid/DBE_10km.git` (private)
+- Vault hub: `Vault/05-Projects/DBE/DBE.md`, with three decision notes under `decisions/`

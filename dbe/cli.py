@@ -1,4 +1,4 @@
-"""Command-line interface: `roadmapper extract …` and `roadmapper to-xlsx …`."""
+"""Command-line interface: `dbe extract …` and `dbe to-xlsx …`."""
 
 from __future__ import annotations
 
@@ -8,12 +8,12 @@ import math
 import sys
 from pathlib import Path
 
-from roadmapper import __version__, schema
-from roadmapper.export import csv_to_xlsx, write_csv, write_json
-from roadmapper.extract import NoRoadsFound, extract
-from roadmapper.mrwa_client import MRWAClient, MRWAError  # MRWAClient is monkeypatched in tests
+from dbe import __version__, schema
+from dbe.export import csv_to_xlsx, write_csv, write_json
+from dbe.extract import NoRoadsFound, extract
+from dbe.mrwa_client import MRWAClient, MRWAError  # MRWAClient is monkeypatched in tests
 
-log = logging.getLogger("roadmapper")
+log = logging.getLogger("dbe")
 
 ROADS_CSV = "roads.csv"
 VERTICES_CSV = "roads_vertices.csv"
@@ -74,9 +74,9 @@ def _remove_stale(path: Path) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="roadmapper", description="Roads inside a circle, from Main Roads WA open data."
+        prog="dbe", description="Roads inside a circle, from Main Roads WA open data."
     )
-    p.add_argument("--version", action="version", version=f"roadmapper {__version__}")
+    p.add_argument("--version", action="version", version=f"dbe {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
 
     ex = sub.add_parser(
@@ -132,7 +132,7 @@ def run_extract(args: argparse.Namespace) -> dict:
     if not args.no_plot:
         plot_png = out / QA_PLOT_PNG
         try:
-            from roadmapper.plot import render_qa_plot
+            from dbe.plot import render_qa_plot
 
             render_qa_plot(roads_csv, metadata_json, plot_png)
             report["plot"] = str(plot_png)

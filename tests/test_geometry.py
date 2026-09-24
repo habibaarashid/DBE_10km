@@ -3,7 +3,7 @@ import math
 import pytest
 from shapely.geometry import LineString, MultiLineString, Point
 
-from roadmapper.geometry import LocalProjection, geojson_to_line, iter_vertices, segment_metrics
+from dbe.geometry import LocalProjection, geojson_to_line, iter_vertices, segment_metrics
 
 CURTIN = (-32.0018629, 115.8924599)
 

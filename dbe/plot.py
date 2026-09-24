@@ -1,7 +1,7 @@
 """Render roads.csv as a PNG for reviewers.
 
 Segments are coloured by NETWORK_TYPE with the query circle drawn in black. Called by
-`roadmapper extract` (best-effort, after the CSVs and metadata.json are written) and by
+`dbe extract` (best-effort, after the CSVs and metadata.json are written) and by
 `scripts/qa_plot.py` for re-rendering an existing output directory.
 """
 
@@ -16,7 +16,7 @@ from matplotlib.collections import LineCollection
 from matplotlib.figure import Figure
 from shapely import wkt
 
-from roadmapper.geometry import LocalProjection
+from dbe.geometry import LocalProjection
 
 # Colours are the validated default palette of the dataviz skill, checked with its validator in
 # `--pairs all` mode. On a map any road type can sit beside any other, so every pair must stay
@@ -121,7 +121,7 @@ def _build_figure(roads_csv: Path, metadata_json: Path) -> Figure:
     ax.set_xlabel("longitude")
     ax.set_ylabel("latitude")
     ax.set_title(
-        f"RoadMapper — {meta['segments_intersecting']} segments, extracted {meta['extracted_at_utc']}"
+        f"DBE — {meta['segments_intersecting']} segments, extracted {meta['extracted_at_utc']}"
     )
     ax.legend(loc="lower left", fontsize=8, frameon=True)
     fig.tight_layout()

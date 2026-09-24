@@ -2,7 +2,7 @@ import json
 
 from matplotlib.colors import to_hex
 
-from roadmapper.plot import OTHER_STYLE, STYLES, _build_figure, _dash_for, render_qa_plot
+from dbe.plot import OTHER_STYLE, STYLES, _build_figure, _dash_for, render_qa_plot
 
 ROADS_CSV = """NETWORK_TYPE,GEOMETRY_WKT
 Local Road,"LINESTRING (115.89 -32.00, 115.891 -32.001)"

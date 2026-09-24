@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from roadmapper.enrich import ENRICH_COLUMNS
+from dbe.enrich import ENRICH_COLUMNS
 
 ORIGINAL_COLUMNS: list[str] = [
     "ROAD",

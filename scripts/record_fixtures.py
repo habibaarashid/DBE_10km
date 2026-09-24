@@ -37,7 +37,7 @@ def fetch_all(layer_id: int) -> list[dict]:
             "resultOffset": offset, "resultRecordCount": PAGE,
         }
         r = requests.post(f"{BASE}/{layer_id}/query", data=params, timeout=120,
-                          headers={"User-Agent": "RoadMapper/0.1 fixture recorder"})
+                          headers={"User-Agent": "DBE/0.1 fixture recorder"})
         r.raise_for_status()
         data = r.json()
         if "error" in data:

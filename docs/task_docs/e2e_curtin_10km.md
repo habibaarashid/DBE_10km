@@ -1,7 +1,7 @@
 # S4.T5 — Curtin 10 km end-to-end production run
 
 **Date:** 2026-09-23. **Command:**
-`uv run --no-sync roadmapper extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km -v`
+`uv run --no-sync dbe extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km -v`
 (live MRWA service, `gisservices.mainroads.wa.gov.au`; full log at `output/curtin_10km_run.log`, not
 committed — `output/` is gitignored).
 
@@ -9,7 +9,7 @@ committed — `output/` is gitignored).
 
 This is the project's first production extraction. It is accepted: neither of the two hard gates
 (Check A — silent truncation, Check B — divided-carriageway averaging) fired, and no defect in
-`roadmapper/` blocks acceptance.
+`dbe/` blocks acceptance.
 
 **Gate B verdict:** passed on 2026-09-23. The live MRWA service, asked for every feature intersecting
 the exact circle polygon (centre -32.0018629 / 115.8924599, radius 10 km), returned exactly 21,643
@@ -69,7 +69,7 @@ happen on any layer). The excess in the raw lists is a live-service paging artif
 `resultOffset` paging and `orderByFields=OBJECTID ASC` against a live, editable ArcGIS service, a
 handful of records land on two adjacent pages. **Check A passes on all four layers — no truncation.**
 
-**De-duplication of enrichment layers (CLOSED):** A measured asymmetry existed in `roadmapper/extract.py`:
+**De-duplication of enrichment layers (CLOSED):** A measured asymmetry existed in `dbe/extract.py`:
 `extract()` de-duplicates layer 17 by `OBJECTID` (the `seen` set) before building rows, but the live
 paging against layers 12/16/8 returned duplicates (typically 2–4 consecutive pages) that were passed
 raw into `EnrichIndex.from_features(...)`. A duplicated span would be double-weighted in the `weighted_mean`

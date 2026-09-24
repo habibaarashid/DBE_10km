@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from roadmapper.slk_join import SlkSpan, dominant_value, index_by_road, span_from_properties, weighted_mean
+from dbe.slk_join import SlkSpan, dominant_value, index_by_road, span_from_properties, weighted_mean
 
 # Confirmed in docs/task_docs/source_verification.md (Task S0.T2). Change here if the service differs.
 HIERARCHY_FIELD = "ROAD_HIERARCHY"

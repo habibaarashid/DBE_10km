@@ -1,4 +1,4 @@
-# RoadMapper Implementation Plan (Opus orchestrator document)
+# DBE Implementation Plan (Opus orchestrator document)
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` to implement this plan task-by-task (fresh Sonnet subagent per task, Opus review at every gate). Steps use checkbox (`- [ ]`) syntax for tracking, but the **authoritative tracker is `docs/task_docs/progress.md`** — update it after every task, not this file.
 
@@ -64,7 +64,7 @@ At every gate:
 ### 0.6 Implementer prompt template (Sonnet)
 
 ```
-You are implementing one task of the RoadMapper project at /Users/watermenon/Desktop/Repositories/RoadMapper.
+You are implementing one task of the DBE project at /Users/watermenon/Desktop/Repositories/DBE.
 Read CLAUDE.md first. Use `uv run` for every Python/pytest command. Follow TDD exactly as the steps say:
 write the failing test, run it and confirm it fails, implement, run and confirm it passes, commit.
 
@@ -86,7 +86,7 @@ that turned out to be wrong about the real data or API (quote the evidence).
 ### 0.7 Reviewer prompt template (Opus, always)
 
 ```
-Review the RoadMapper change(s) at /Users/watermenon/Desktop/Repositories/RoadMapper for <task or segment range>.
+Review the DBE change(s) at /Users/watermenon/Desktop/Repositories/DBE for <task or segment range>.
 Read docs/task_docs/orchestrator_plan.md §1 (Global Constraints) and the task text for <task ids>.
 Stage 1 — spec compliance: does the code do exactly what the task says, with the exact public names in
 the Interfaces block, nothing missing, nothing extra? Stage 2 — code quality: correctness bugs, edge
@@ -100,7 +100,7 @@ explicit verdict: APPROVE or REQUEST CHANGES.
 
 - Commit after every task; conventional commits (`feat:`, `test:`, `fix:`, `docs:`, `chore:`).
 - **No `Co-Authored-By: Claude …` trailer.** The user's global rule overrides any harness reminder.
-- Committing and pushing without asking is explicitly allowed for this repo (`init_prompt.md`). Remote `origin` is `git@github.com:habibaarashid/RoadMapper.git` (private, created 2026-09-22). Push after each gate and at the end of every orchestrator session (`git push origin main`).
+- Committing and pushing without asking is explicitly allowed for this repo (`init_prompt.md`). Remote `origin` is `git@github.com:habibaarashid/DBE_10km.git` (private, created 2026-09-22). Push after each gate and at the end of every orchestrator session (`git push origin main`).
 - Branch is `main`. Work directly on `main` (single-developer repo, no PR flow requested).
 - Never commit `data/`, `output/`, or cache directories (see `.gitignore`).
 
@@ -124,7 +124,7 @@ Every task's requirements implicitly include these.
 - **Coordinates:** WGS84 lon/lat as served by `outSR=4326`; source datum is GDA94 (wkid 4283); document "differs from WGS84 by ≤ ~1.5 m" in metadata. WKT uses `lon lat` order (x y).
 - **The provided CSV `data/Road_Network - Road_Network.csv` is validation-only.** Never read it at runtime; only `tests/test_reconcile_csv.py` may open it, and that test skips when the file is absent.
 - **XLSX is built from the CSV files**, not from in-memory rows, so the workbook is provably a conversion of the CSV (the user's stated requirement).
-- **Column names and order** are fixed by `roadmapper/schema.py` (§3.3). Tests assert the exact header.
+- **Column names and order** are fixed by `dbe/schema.py` (§3.3). Tests assert the exact header.
 - **Public names** in every Interfaces block are contracts. Do not rename.
 - **Tests:** `uv run pytest` runs offline by default (`-m "not network"` in `addopts`). Live tests are marked `@pytest.mark.network`.
 - **Outputs** go under `output/` (gitignored). Fixtures under `tests/fixtures/` are committed and each must be < 5 MB.
@@ -161,8 +161,8 @@ Verified live by Fable and a research agent. Segment 0 re-verifies and records a
 ### 3.1 Inputs, outputs, CLI
 
 ```
-uv run roadmapper extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km [--cache-dir DIR] [--no-xlsx] [--osm] [-v]
-uv run roadmapper to-xlsx --roads output/curtin_10km/roads.csv --vertices output/curtin_10km/roads_vertices.csv --metadata output/curtin_10km/metadata.json --out output/curtin_10km/roads.xlsx
+uv run dbe extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km [--cache-dir DIR] [--no-xlsx] [--osm] [-v]
+uv run dbe to-xlsx --roads output/curtin_10km/roads.csv --vertices output/curtin_10km/roads_vertices.csv --metadata output/curtin_10km/metadata.json --out output/curtin_10km/roads.xlsx
 ```
 
 `extract` writes into `--out` (created if missing):
@@ -188,7 +188,7 @@ Exit code 0 on success, 1 on any error (message on stderr). Logging via `logging
 - Start/end = first vertex of the first part / last vertex of the last part, as served (MRWA digitising direction, which follows increasing SLK).
 - `MultiLineString` is preserved as-is in WKT; vertices table carries a `PART` index.
 
-### 3.3 Output schema (exact; `roadmapper/schema.py` is the single source of truth)
+### 3.3 Output schema (exact; `dbe/schema.py` is the single source of truth)
 
 `ORIGINAL_COLUMNS` (25, identical to the provided CSV header, same order):
 `ROAD, ROAD_NAME, COMMON_USAGE_NAME, START_SLK, END_SLK, CWY, START_TRUE_DIST, END_TRUE_DIST, NETWORK_TYPE, RA_NO, RA_NAME, LG_NO, LG_NAME, START_NODE_NO, START_NODE_NAME, END_NODE_NO, END_NODE_NAME, DATUM_NE_ID, NM_BEGIN_MP, NM_END_MP, NETWORK_ELEMENT, ROUTE_NE_ID, OBJECTID, GlobalID, GEOLOCSTLength`
@@ -230,24 +230,24 @@ cli.extract → LocalProjection → circle, envelope
 ### 3.5 File structure
 
 ```
-pyproject.toml                 uv project; [project.scripts] roadmapper = "roadmapper.cli:main"; pytest addopts, markers; ruff config
+pyproject.toml                 uv project; [project.scripts] dbe = "dbe.cli:main"; pytest addopts, markers; ruff config
 README.md                      usage, data sources, licence/attribution, column dictionary (Segment 6)
 CLAUDE.md                      repo conventions (exists; Segment 6 polishes)
 .gitignore                     data/ output/ .venv/ __pycache__/ *.pyc .pytest_cache/ .ruff_cache/ *.egg-info/ .DS_Store
-roadmapper/__init__.py         __version__ = "0.1.0"
-roadmapper/__main__.py         `from roadmapper.cli import main; raise SystemExit(main())`
-roadmapper/cli.py              argparse subcommands extract / to-xlsx; logging setup
-roadmapper/geometry.py         LocalProjection, SegmentMetrics, geojson_to_line, segment_metrics, iter_vertices
-roadmapper/mrwa_client.py      MRWAClient (paging, retries, cache), constants, normalise_properties
-roadmapper/slk_join.py         SlkSpan, overlap_len, cwy_compatible, span_from_properties, index_by_road, overlapping, dominant_value, weighted_mean
-roadmapper/enrich.py           field maps for layers 12/16/8, enrich_segment
-roadmapper/schema.py           column lists, DATA_SOURCE, LICENCE, DATUM_NOTE
-roadmapper/extract.py          RoadSource protocol, ExtractResult, extract()
-roadmapper/export.py           write_csv, write_json, csv_to_xlsx
-roadmapper/osm_client.py       (Segment 5) OsmWay, fetch_highways
-roadmapper/osm_match.py        (Segment 5) normalise_name, match_ways, apply_osm
+dbe/__init__.py         __version__ = "0.1.0"
+dbe/__main__.py         `from dbe.cli import main; raise SystemExit(main())`
+dbe/cli.py              argparse subcommands extract / to-xlsx; logging setup
+dbe/geometry.py         LocalProjection, SegmentMetrics, geojson_to_line, segment_metrics, iter_vertices
+dbe/mrwa_client.py      MRWAClient (paging, retries, cache), constants, normalise_properties
+dbe/slk_join.py         SlkSpan, overlap_len, cwy_compatible, span_from_properties, index_by_road, overlapping, dominant_value, weighted_mean
+dbe/enrich.py           field maps for layers 12/16/8, enrich_segment
+dbe/schema.py           column lists, DATA_SOURCE, LICENCE, DATUM_NOTE
+dbe/extract.py          RoadSource protocol, ExtractResult, extract()
+dbe/export.py           write_csv, write_json, csv_to_xlsx
+dbe/osm_client.py       (Segment 5) OsmWay, fetch_highways
+dbe/osm_match.py        (Segment 5) normalise_name, match_ways, apply_osm
 scripts/record_fixtures.py     records tests/fixtures/*.json from the live API (1.5 km envelope at Curtin)
-roadmapper/plot.py             render_qa_plot(): the map, written automatically by `extract` (added 2026-09-23)
+dbe/plot.py             render_qa_plot(): the map, written automatically by `extract` (added 2026-09-23)
 scripts/qa_plot.py             thin wrapper to re-render the map for an existing output directory
 tests/conftest.py              fixture loaders, FixtureSource
 tests/fixtures/                layer17_curtin2500.geojson, layer12_…, layer16_…, layer8_…, layer17_metadata.json, layer12_metadata.json, layer16_metadata.json, layer8_metadata.json
@@ -300,17 +300,17 @@ Task ids are `S<segment>.T<n>`. Each task ends in a commit. Interfaces blocks ar
 ### Task S0.T1: Project scaffold with uv
 
 **Files:**
-- Create: `pyproject.toml`, `roadmapper/__init__.py`, `roadmapper/__main__.py`, `tests/__init__.py`, `tests/test_smoke_import.py`
+- Create: `pyproject.toml`, `dbe/__init__.py`, `dbe/__main__.py`, `tests/__init__.py`, `tests/test_smoke_import.py`
 - Modify: `.gitignore` (exists), `CLAUDE.md` (exists — only add the "Commands" block if missing)
 
 **Interfaces:**
-- Produces: package `roadmapper` importable; `uv run pytest -q` works; `uv run roadmapper --help` will work once `cli.py` exists (S4.T3) — until then the script entry may fail, that is expected.
+- Produces: package `dbe` importable; `uv run pytest -q` works; `uv run dbe --help` will work once `cli.py` exists (S4.T3) — until then the script entry may fail, that is expected.
 
 - [ ] **Step 1: Create `pyproject.toml`**
 
 ```toml
 [project]
-name = "roadmapper"
+name = "dbe"
 version = "0.1.0"
 description = "Extract road geometry and attributes inside a circle from Main Roads WA open data"
 requires-python = ">=3.11"
@@ -324,7 +324,7 @@ dependencies = [
 ]
 
 [project.scripts]
-roadmapper = "roadmapper.cli:main"
+dbe = "dbe.cli:main"
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
@@ -334,7 +334,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["roadmapper"]
+packages = ["dbe"]
 
 [tool.pytest.ini_options]
 addopts = "-m 'not network'"
@@ -353,16 +353,16 @@ select = ["E", "F", "I", "B", "UP"]
 
 - [ ] **Step 2: Create the package and a smoke test**
 
-`roadmapper/__init__.py`:
+`dbe/__init__.py`:
 ```python
-"""RoadMapper: roads inside a circle, from Main Roads WA open data."""
+"""DBE: roads inside a circle, from Main Roads WA open data."""
 
 __version__ = "0.1.0"
 ```
 
-`roadmapper/__main__.py`:
+`dbe/__main__.py`:
 ```python
-from roadmapper.cli import main
+from dbe.cli import main
 
 raise SystemExit(main())
 ```
@@ -371,25 +371,25 @@ raise SystemExit(main())
 
 `tests/test_smoke_import.py`:
 ```python
-import roadmapper
+import dbe
 
 
 def test_version_string():
-    assert roadmapper.__version__ == "0.1.0"
+    assert dbe.__version__ == "0.1.0"
 ```
 
 - [ ] **Step 3: Install and run**
 
 Run: `uv python install 3.12 && uv sync && uv run pytest -q`
-Expected: `1 passed`. If `uv sync` complains about the `roadmapper.cli` script target, that is fine at this stage (the module arrives in S4.T4); if it blocks, temporarily create `roadmapper/cli.py` containing only `def main(argv=None) -> int:\n    raise SystemExit("cli not implemented yet")` and note it in progress.md.
+Expected: `1 passed`. If `uv sync` complains about the `dbe.cli` script target, that is fine at this stage (the module arrives in S4.T4); if it blocks, temporarily create `dbe/cli.py` containing only `def main(argv=None) -> int:\n    raise SystemExit("cli not implemented yet")` and note it in progress.md.
 
 - [ ] **Step 4: Confirm `.gitignore` contains** `data/`, `output/`, `.venv/`, `__pycache__/`, `*.pyc`, `.pytest_cache/`, `.ruff_cache/`, `*.egg-info/`, `.DS_Store`, `uv.lock` is **not** ignored (commit it).
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add pyproject.toml uv.lock roadmapper tests .gitignore .python-version 2>/dev/null
-git commit -m "chore: scaffold roadmapper package with uv, pytest and ruff"
+git add pyproject.toml uv.lock dbe tests .gitignore .python-version 2>/dev/null
+git commit -m "chore: scaffold dbe package with uv, pytest and ruff"
 ```
 
 ---
@@ -421,7 +421,7 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     for layer_id, expected_name in LAYERS.items():
         r = requests.get(f"{BASE}/{layer_id}", params={"f": "pjson"}, timeout=60,
-                         headers={"User-Agent": "RoadMapper/0.1 schema check"})
+                         headers={"User-Agent": "DBE/0.1 schema check"})
         r.raise_for_status()
         meta = r.json()
         (OUT / f"layer{layer_id}_metadata.json").write_text(json.dumps(meta, indent=2))
@@ -466,7 +466,7 @@ git commit -m "chore: verify MRWA layer schemas and record metadata fixtures"
 **Interfaces:**
 - Produces: GeoJSON `FeatureCollection` files (all pages merged into one `features` array) that `tests/conftest.py` (S2.T2) loads. Envelope constant `CURTIN_2500_ENVELOPE` documented in `tests/fixtures/README.md` as the exact `(xmin, ymin, xmax, ymax)` used.
 
-- [ ] **Step 1: Write the recorder** (standalone, plain `requests`; it must not import `roadmapper.geometry`, which does not exist yet — compute the envelope arithmetically)
+- [ ] **Step 1: Write the recorder** (standalone, plain `requests`; it must not import `dbe.geometry`, which does not exist yet — compute the envelope arithmetically)
 
 ```python
 """Record GeoJSON fixtures for a ~1.5 km box around Curtin's Design building. Network required."""
@@ -502,7 +502,7 @@ def fetch_all(layer_id: int) -> list[dict]:
             "resultOffset": offset, "resultRecordCount": PAGE,
         }
         r = requests.post(f"{BASE}/{layer_id}/query", data=params, timeout=120,
-                          headers={"User-Agent": "RoadMapper/0.1 fixture recorder"})
+                          headers={"User-Agent": "DBE/0.1 fixture recorder"})
         r.raise_for_status()
         data = r.json()
         if "error" in data:
@@ -552,7 +552,7 @@ git commit -m "test: record MRWA GeoJSON fixtures for a 1.5 km envelope at Curti
 ### Task S1.T1: LocalProjection, circle and envelope
 
 **Files:**
-- Create: `roadmapper/geometry.py`, `tests/test_geometry.py`
+- Create: `dbe/geometry.py`, `tests/test_geometry.py`
 
 **Interfaces:**
 - Produces:
@@ -566,7 +566,7 @@ import math
 import pytest
 from shapely.geometry import LineString, Point
 
-from roadmapper.geometry import LocalProjection
+from dbe.geometry import LocalProjection
 
 CURTIN = (-32.0018629, 115.8924599)
 
@@ -612,7 +612,7 @@ def test_east_west_line_length_in_metres():
 - [ ] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_geometry.py -q`
-Expected: FAIL with `ModuleNotFoundError: No module named 'roadmapper.geometry'`
+Expected: FAIL with `ModuleNotFoundError: No module named 'dbe.geometry'`
 
 - [ ] **Step 3: Implement**
 
@@ -660,7 +660,7 @@ Expected: `5 passed`
 - [ ] **Step 5: Commit**
 
 ```bash
-git add roadmapper/geometry.py tests/test_geometry.py
+git add dbe/geometry.py tests/test_geometry.py
 git commit -m "feat(geometry): local AEQD projection with circle and WGS84 envelope"
 ```
 
@@ -669,7 +669,7 @@ git commit -m "feat(geometry): local AEQD projection with circle and WGS84 envel
 ### Task S1.T2: Segment metrics, GeoJSON parsing and vertex iteration
 
 **Files:**
-- Modify: `roadmapper/geometry.py`
+- Modify: `dbe/geometry.py`
 - Test: `tests/test_geometry.py` (append)
 
 **Interfaces:**
@@ -685,7 +685,7 @@ git commit -m "feat(geometry): local AEQD projection with circle and WGS84 envel
 ```python
 from shapely.geometry import MultiLineString
 
-from roadmapper.geometry import geojson_to_line, iter_vertices, segment_metrics
+from dbe.geometry import geojson_to_line, iter_vertices, segment_metrics
 
 
 def _proj_and_circle(radius_m=1000.0):
@@ -766,7 +766,7 @@ def test_multiline_start_is_first_part_end_is_last_part():
 Run: `uv run pytest tests/test_geometry.py -q`
 Expected: FAIL with `ImportError: cannot import name 'geojson_to_line'`
 
-- [ ] **Step 3: Implement (append to `roadmapper/geometry.py`)**
+- [ ] **Step 3: Implement (append to `dbe/geometry.py`)**
 
 ```python
 from collections.abc import Iterator
@@ -834,13 +834,13 @@ Move the new imports to the top of the module (ruff `I` rule) — `Iterator`, `d
 
 - [ ] **Step 4: Run to verify pass and lint**
 
-Run: `uv run pytest tests/test_geometry.py -q && uv run ruff check roadmapper tests`
+Run: `uv run pytest tests/test_geometry.py -q && uv run ruff check dbe tests`
 Expected: `12 passed`; ruff clean.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add roadmapper/geometry.py tests/test_geometry.py
+git add dbe/geometry.py tests/test_geometry.py
 git commit -m "feat(geometry): segment metrics, GeoJSON parsing and vertex iteration"
 ```
 
@@ -851,7 +851,7 @@ git commit -m "feat(geometry): segment metrics, GeoJSON parsing and vertex itera
 ### Task S2.T1: MRWAClient with paging, retries and disk cache
 
 **Files:**
-- Create: `roadmapper/mrwa_client.py`, `tests/test_mrwa_client.py`
+- Create: `dbe/mrwa_client.py`, `tests/test_mrwa_client.py`
 
 **Interfaces:**
 - Produces:
@@ -870,7 +870,7 @@ import json
 import pytest
 import requests
 
-from roadmapper.mrwa_client import (
+from dbe.mrwa_client import (
     LAYER_ROAD_NETWORK,
     MRWAClient,
     MRWAError,
@@ -1004,7 +1004,7 @@ def test_normalise_properties_renames_length_field():
 - [ ] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_mrwa_client.py -q`
-Expected: FAIL with `ModuleNotFoundError: No module named 'roadmapper.mrwa_client'`
+Expected: FAIL with `ModuleNotFoundError: No module named 'dbe.mrwa_client'`
 
 - [ ] **Step 3: Implement**
 
@@ -1029,7 +1029,7 @@ LAYER_PAVEMENT = 12
 LAYER_HIERARCHY = 16
 LAYER_SPEED = 8
 PAGE_SIZE = 2000
-USER_AGENT = "RoadMapper/0.1 (research tool; https://github.com/habibaarashid)"
+USER_AGENT = "DBE/0.1 (research tool; https://github.com/habibaarashid)"
 TRANSIENT_STATUS = {429, 500, 502, 503, 504}
 LENGTH_FIELD_ALIASES = ("GEOLOC.STLength()", "Shape__Length", "SHAPE.STLength()")
 MAX_PAGES = 10_000
@@ -1159,13 +1159,13 @@ Note for the implementer: `MRWAError` raised inside the `try` for an ArcGIS erro
 
 - [ ] **Step 4: Run to verify pass and lint**
 
-Run: `uv run pytest tests/test_mrwa_client.py -q && uv run ruff check roadmapper tests`
+Run: `uv run pytest tests/test_mrwa_client.py -q && uv run ruff check dbe tests`
 Expected: `8 passed`; ruff clean.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add roadmapper/mrwa_client.py tests/test_mrwa_client.py
+git add dbe/mrwa_client.py tests/test_mrwa_client.py
 git commit -m "feat(client): MRWA ArcGIS REST client with paging, retries and disk cache"
 ```
 
@@ -1239,7 +1239,7 @@ def _reset_fixture_source_calls(request):
 - [ ] **Step 2: Write `tests/test_fixtures_shape.py`** (guards the recorded data so later tasks can rely on it)
 
 ```python
-from roadmapper.mrwa_client import normalise_properties
+from dbe.mrwa_client import normalise_properties
 from tests.conftest import load_fixture
 
 EXPECTED_17 = [
@@ -1295,8 +1295,8 @@ If `test_layer12_fixture_has_width_fields_and_state_roads_only` fails on the `NE
 ```python
 import pytest
 
-from roadmapper.geometry import LocalProjection
-from roadmapper.mrwa_client import LAYER_ROAD_NETWORK, MRWAClient
+from dbe.geometry import LocalProjection
+from dbe.mrwa_client import LAYER_ROAD_NETWORK, MRWAClient
 
 pytestmark = pytest.mark.network
 
@@ -1332,7 +1332,7 @@ Checklist for the Opus reviewer (paste into §0.7 template):
 3. Fixtures: four `*_curtin2500.geojson` files each < 5 MB; layer 12 non-empty; README in `tests/fixtures/` present.
 4. `geometry.py`: `always_xy=True` on both transformers; `envelope_wgs84` returns lon/lat order; `segment_metrics` handles zero-length geometry without division by zero; WKT rounding is 7 decimals.
 5. `mrwa_client.py`: POST for queries, GET for metadata; ArcGIS `error` body is not retried; paging stops on short page *and* on empty page; cache key includes method, URL and all params; `MAX_PAGES` guard present.
-6. No dependency outside §1; no reading of `data/` anywhere in `roadmapper/`.
+6. No dependency outside §1; no reading of `data/` anywhere in `dbe/`.
 7. `progress.md`: rows S0.T1–S2.T2 `done` with SHAs; Decisions log has entries for any field-name or radius change.
 
 Verdict → `progress.md` → Gate log. On PASS, proceed to Segment 3.
@@ -1357,7 +1357,7 @@ orchestrator: write a cache entry, truncate the file, re-query → `json.JSONDec
 network is **never attempted** (0 HTTP calls) because `json.loads(cache_path.read_text())` sits
 outside the retry `try`. The 10 km run writes roughly 26 pages × 4 layers through `write_text`;
 interrupt it once and every later run dies on the same poisoned page — destroying the resumability
-the cache exists to provide (§3.1). Fix in `roadmapper/mrwa_client.py`:
+the cache exists to provide (§3.1). Fix in `dbe/mrwa_client.py`:
 
 ```python
         if cache_path is not None and cache_path.exists():
@@ -1457,7 +1457,7 @@ which rejects Point — this re-opens if any Segment 3–4 code calls `segment_m
 ### Task S3.T1: SLK overlap join primitives
 
 **Files:**
-- Create: `roadmapper/slk_join.py`, `tests/test_slk_join.py`
+- Create: `dbe/slk_join.py`, `tests/test_slk_join.py`
 
 **Interfaces:**
 - Produces:
@@ -1477,7 +1477,7 @@ which rejects Point — this re-opens if any Segment 3–4 code calls `segment_m
 ```python
 import pytest
 
-from roadmapper.slk_join import (
+from dbe.slk_join import (
     SlkSpan,
     cwy_compatible,
     dominant_value,
@@ -1589,7 +1589,7 @@ def test_weighted_mean_uses_overlap_weights():
 - [ ] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_slk_join.py -q`
-Expected: FAIL with `ModuleNotFoundError: No module named 'roadmapper.slk_join'`
+Expected: FAIL with `ModuleNotFoundError: No module named 'dbe.slk_join'`
 
 - [ ] **Step 3: Implement**
 
@@ -1713,13 +1713,13 @@ def weighted_mean(target: SlkSpan, by_road: dict[str, list[SlkSpan]], field_name
 
 - [ ] **Step 4: Run to verify pass and lint**
 
-Run: `uv run pytest tests/test_slk_join.py -q && uv run ruff check roadmapper tests`
+Run: `uv run pytest tests/test_slk_join.py -q && uv run ruff check dbe tests`
 Expected: `7 passed`; ruff clean.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add roadmapper/slk_join.py tests/test_slk_join.py
+git add dbe/slk_join.py tests/test_slk_join.py
 git commit -m "feat(slk): linear-referencing overlap joins with CWY-aware matching"
 ```
 
@@ -1728,7 +1728,7 @@ git commit -m "feat(slk): linear-referencing overlap joins with CWY-aware matchi
 ### Task S3.T2: Enrichment from layers 12 / 16 / 8 with width provenance
 
 **Files:**
-- Create: `roadmapper/enrich.py`, `tests/test_enrich.py`
+- Create: `dbe/enrich.py`, `tests/test_enrich.py`
 
 **Interfaces:**
 - Consumes: everything in `slk_join.py`; `tests/conftest.py` fixtures; confirmed field names from `docs/task_docs/source_verification.md`.
@@ -1742,7 +1742,7 @@ git commit -m "feat(slk): linear-referencing overlap joins with CWY-aware matchi
 ```python
 import pytest
 
-from roadmapper.enrich import ENRICH_COLUMNS, EnrichIndex, enrich_segment
+from dbe.enrich import ENRICH_COLUMNS, EnrichIndex, enrich_segment
 
 EXPECTED_COLUMNS = [
     "ROAD_HIERARCHY", "SPEED_LIMIT", "TOTAL_PAVE_WIDTH_M", "TOTAL_SEAL_WIDTH_M", "TRAFFICABLE_SURF_WIDTH_M",
@@ -1882,7 +1882,7 @@ def test_fixture_state_roads_get_widths(fixture_source):
 - [ ] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_enrich.py -q`
-Expected: FAIL with `ModuleNotFoundError: No module named 'roadmapper.enrich'`
+Expected: FAIL with `ModuleNotFoundError: No module named 'dbe.enrich'`
 
 - [ ] **Step 3: Implement**
 
@@ -1893,7 +1893,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from roadmapper.slk_join import SlkSpan, dominant_value, index_by_road, span_from_properties, weighted_mean
+from dbe.slk_join import SlkSpan, dominant_value, index_by_road, span_from_properties, weighted_mean
 
 # Confirmed in docs/task_docs/source_verification.md (Task S0.T2). Change here if the service differs.
 HIERARCHY_FIELD = "ROAD_HIERARCHY"
@@ -1963,13 +1963,13 @@ def enrich_segment(props: dict[str, Any], index: EnrichIndex) -> dict[str, Any]:
 
 - [ ] **Step 4: Run to verify pass and lint**
 
-Run: `uv run pytest tests/test_enrich.py -q && uv run ruff check roadmapper tests`
+Run: `uv run pytest tests/test_enrich.py -q && uv run ruff check dbe tests`
 Expected: `6 passed`; ruff clean. If `test_fixture_state_roads_get_widths` fails on the 0.8 ratio, print the unmatched State Road `ROAD`/`CWY`/SLK values and compare with layer 12 rows for the same road before changing anything — a CWY mismatch pattern (e.g. layer 12 uses `Single` where 17 uses `Left`/`Right`) is handled by `cwy_compatible`; an SLK offset pattern is a real finding → Decisions log.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add roadmapper/enrich.py tests/test_enrich.py
+git add dbe/enrich.py tests/test_enrich.py
 git commit -m "feat(enrich): width, hierarchy and speed enrichment with WIDTH_SOURCE provenance"
 ```
 
@@ -1980,17 +1980,17 @@ git commit -m "feat(enrich): width, hierarchy and speed enrichment with WIDTH_SO
 ### Task S4.T1: Column contract in `schema.py`
 
 **Files:**
-- Create: `roadmapper/schema.py`, `tests/test_schema.py`
+- Create: `dbe/schema.py`, `tests/test_schema.py`
 
 **Interfaces:**
-- Consumes: `roadmapper.enrich.ENRICH_COLUMNS`.
+- Consumes: `dbe.enrich.ENRICH_COLUMNS`.
 - Produces: `ORIGINAL_COLUMNS` (25), `GEOMETRY_COLUMNS` (9), `ENRICH_COLUMNS` (re-exported, 12), `OSM_COLUMNS` (5), `PROVENANCE_COLUMNS` (2), `OUTPUT_COLUMNS` (53), `VERTEX_COLUMNS` (9), `ID_COLUMNS` (columns kept as text in XLSX), `DATA_SOURCE: str`, `LICENCE: str`, `DATUM_NOTE: str`, `OSM_ATTRIBUTION: str`.
 
 - [ ] **Step 1: Write the failing test**
 
 ```python
-from roadmapper import schema
-from roadmapper.enrich import ENRICH_COLUMNS
+from dbe import schema
+from dbe.enrich import ENRICH_COLUMNS
 
 ORIGINAL = [
     "ROAD",
@@ -2068,7 +2068,7 @@ def test_vertex_columns_and_text_ids():
     assert "Main Roads" in schema.DATA_SOURCE and "CC BY" in schema.LICENCE and "GDA94" in schema.DATUM_NOTE
 ```
 
-- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_schema.py -q` → `ImportError: cannot import name 'schema' from 'roadmapper'`. Note this is an `ImportError`, **not** a `ModuleNotFoundError`: the test's first line is `from roadmapper import schema`, which routes through CPython's `_handle_fromlist`, and that catches the inner `ModuleNotFoundError` so the `IMPORT_FROM` bytecode raises the parent class instead. `import roadmapper.schema` would give the other message.
+- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_schema.py -q` → `ImportError: cannot import name 'schema' from 'dbe'`. Note this is an `ImportError`, **not** a `ModuleNotFoundError`: the test's first line is `from dbe import schema`, which routes through CPython's `_handle_fromlist`, and that catches the inner `ModuleNotFoundError` so the `IMPORT_FROM` bytecode raises the parent class instead. `import dbe.schema` would give the other message.
 
 - [ ] **Step 3: Implement**
 
@@ -2077,7 +2077,7 @@ def test_vertex_columns_and_text_ids():
 
 from __future__ import annotations
 
-from roadmapper.enrich import ENRICH_COLUMNS
+from dbe.enrich import ENRICH_COLUMNS
 
 ORIGINAL_COLUMNS: list[str] = [
     "ROAD",
@@ -2167,16 +2167,16 @@ DATUM_NOTE = (
 OSM_ATTRIBUTION = "OpenStreetMap enrichment (only with --osm): © OpenStreetMap contributors, ODbL 1.0."
 ```
 
-- [ ] **Step 4: Run** — `uv run pytest tests/test_schema.py -q && uv run ruff check roadmapper tests` → `3 passed`, clean.
+- [ ] **Step 4: Run** — `uv run pytest tests/test_schema.py -q && uv run ruff check dbe tests` → `3 passed`, clean.
 
-- [ ] **Step 5: Commit** — `git add roadmapper/schema.py tests/test_schema.py && git commit -m "feat(schema): fixed 53-column output contract and provenance strings"`
+- [ ] **Step 5: Commit** — `git add dbe/schema.py tests/test_schema.py && git commit -m "feat(schema): fixed 53-column output contract and provenance strings"`
 
 ---
 
 ### Task S4.T2: The `extract()` pipeline
 
 **Files:**
-- Create: `roadmapper/extract.py`, `tests/test_extract.py`
+- Create: `dbe/extract.py`, `tests/test_extract.py`
 
 **Interfaces:**
 - Consumes: `LocalProjection`, `geojson_to_line`, `segment_metrics`, `iter_vertices` (geometry); `normalise_properties`, layer constants (mrwa_client); `EnrichIndex`, `enrich_segment` (enrich); `schema.*`; `tests.conftest.FixtureSource`.
@@ -2185,7 +2185,7 @@ OSM_ATTRIBUTION = "OpenStreetMap enrichment (only with --osm): © OpenStreetMap 
   - `class NoRoadsFound(RuntimeError)`
   - `@dataclass class ExtractResult:` `roads: list[dict]`, `vertices: list[dict]`, `metadata: dict`
   - `def extract(lat: float, lon: float, radius_km: float, source: RoadSource, with_osm: bool = False) -> ExtractResult` — `with_osm` is accepted now and wired in S5.T2; until then it must be ignored.
-  - `metadata` keys (all present, always): `centre_lat, centre_lon, radius_km, envelope_wgs84 (list of 4), extracted_at_utc, features_returned_layer17, segments_intersecting, segments_outside_circle, skipped_no_geometry, skipped_bad_geometry, duplicates_dropped, enrich_duplicates_dropped, enrich_unparsed_slk, features_layer12, features_layer16, features_layer8, network_type_counts (dict), width_source_counts (dict), vertices_rows, data_source, licence, datum_note, osm_enabled (bool), osm_attribution (str or None), roadmapper_version`.
+  - `metadata` keys (all present, always): `centre_lat, centre_lon, radius_km, envelope_wgs84 (list of 4), extracted_at_utc, features_returned_layer17, segments_intersecting, segments_outside_circle, skipped_no_geometry, skipped_bad_geometry, duplicates_dropped, enrich_duplicates_dropped, enrich_unparsed_slk, features_layer12, features_layer16, features_layer8, network_type_counts (dict), width_source_counts (dict), vertices_rows, data_source, licence, datum_note, osm_enabled (bool), osm_attribution (str or None), dbe_version`.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -2194,8 +2194,8 @@ import copy
 
 import pytest
 
-from roadmapper import schema
-from roadmapper.extract import ExtractResult, NoRoadsFound, extract
+from dbe import schema
+from dbe.extract import ExtractResult, NoRoadsFound, extract
 from tests.conftest import FixtureSource
 
 
@@ -2247,7 +2247,7 @@ def test_no_roads_raises(curtin_2400):
         extract(source=FixtureSource({17: [], 12: [], 16: [], 8: []}), **curtin_2400)
 ```
 
-- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_extract.py -q` → `ModuleNotFoundError: No module named 'roadmapper.extract'`
+- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_extract.py -q` → `ModuleNotFoundError: No module named 'dbe.extract'`
 
 - [ ] **Step 3: Implement**
 
@@ -2262,17 +2262,17 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any, Protocol
 
-from roadmapper import __version__, schema
-from roadmapper.enrich import EnrichIndex, enrich_segment
-from roadmapper.geometry import LocalProjection, geojson_to_line, iter_vertices, segment_metrics
-from roadmapper.mrwa_client import (
+from dbe import __version__, schema
+from dbe.enrich import EnrichIndex, enrich_segment
+from dbe.geometry import LocalProjection, geojson_to_line, iter_vertices, segment_metrics
+from dbe.mrwa_client import (
     LAYER_HIERARCHY,
     LAYER_PAVEMENT,
     LAYER_ROAD_NETWORK,
     LAYER_SPEED,
     normalise_properties,
 )
-from roadmapper.slk_join import span_from_properties
+from dbe.slk_join import span_from_properties
 
 log = logging.getLogger(__name__)
 
@@ -2420,22 +2420,22 @@ def extract(
         "datum_note": schema.DATUM_NOTE,
         "osm_enabled": bool(with_osm),
         "osm_attribution": None,
-        "roadmapper_version": __version__,
+        "dbe_version": __version__,
     }
     log.info("kept %s of %s segments (%s vertices)", len(roads), len(feats17), len(vertices))
     return ExtractResult(roads, vertices, metadata)
 ```
 
-- [ ] **Step 4: Run** — `uv run pytest tests/test_extract.py -q && uv run ruff check roadmapper tests` → `5 passed`, clean.
+- [ ] **Step 4: Run** — `uv run pytest tests/test_extract.py -q && uv run ruff check dbe tests` → `5 passed`, clean.
 
-- [ ] **Step 5: Commit** — `git add roadmapper/extract.py tests/test_extract.py && git commit -m "feat(extract): circle-filtered extraction pipeline with enrichment and vertices"`
+- [ ] **Step 5: Commit** — `git add dbe/extract.py tests/test_extract.py && git commit -m "feat(extract): circle-filtered extraction pipeline with enrichment and vertices"`
 
 ---
 
 ### Task S4.T3: Export — CSV, metadata JSON, and CSV→XLSX conversion
 
 **Files:**
-- Create: `roadmapper/export.py`, `tests/test_export.py`
+- Create: `dbe/export.py`, `tests/test_export.py`
 
 **Interfaces:**
 - Consumes: `schema.*`.
@@ -2453,8 +2453,8 @@ import json
 
 from openpyxl import load_workbook
 
-from roadmapper import schema
-from roadmapper.export import EXCEL_MAX_CELL_CHARS, csv_to_xlsx, write_csv, write_json
+from dbe import schema
+from dbe.export import EXCEL_MAX_CELL_CHARS, csv_to_xlsx, write_csv, write_json
 
 
 def _road_row(i, wkt="LINESTRING (115.89 -32, 115.9 -32)"):
@@ -2564,7 +2564,7 @@ def test_csv_to_xlsx_splits_vertices_and_truncates_long_cells(tmp_path):
     assert cell.endswith("…TRUNCATED") and len(cell) <= EXCEL_MAX_CELL_CHARS
 ```
 
-- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_export.py -q` → `ModuleNotFoundError: No module named 'roadmapper.export'`
+- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_export.py -q` → `ModuleNotFoundError: No module named 'dbe.export'`
 
 - [ ] **Step 3: Implement**
 
@@ -2581,7 +2581,7 @@ from typing import Any
 
 import pandas as pd
 
-from roadmapper import schema
+from dbe import schema
 
 log = logging.getLogger(__name__)
 
@@ -2673,20 +2673,20 @@ def csv_to_xlsx(
     }
 ```
 
-- [ ] **Step 4: Run** — `uv run pytest tests/test_export.py -q && uv run ruff check roadmapper tests` → `5 passed`, clean. If pandas emits a `FutureWarning` about dtype downcasting in `_truncate_long_cells`, replace `df.loc[mask, col] = …` with `df[col] = df[col].where(~mask, df[col].astype(str).str.slice(0, _TRUNCATE_AT) + _TRUNCATE_MARK)`.
+- [ ] **Step 4: Run** — `uv run pytest tests/test_export.py -q && uv run ruff check dbe tests` → `5 passed`, clean. If pandas emits a `FutureWarning` about dtype downcasting in `_truncate_long_cells`, replace `df.loc[mask, col] = …` with `df[col] = df[col].where(~mask, df[col].astype(str).str.slice(0, _TRUNCATE_AT) + _TRUNCATE_MARK)`.
 
-- [ ] **Step 5: Commit** — `git add roadmapper/export.py tests/test_export.py && git commit -m "feat(export): CSV writers, metadata JSON and CSV-to-XLSX conversion with Excel guards"`
+- [ ] **Step 5: Commit** — `git add dbe/export.py tests/test_export.py && git commit -m "feat(export): CSV writers, metadata JSON and CSV-to-XLSX conversion with Excel guards"`
 
 ---
 
 ### Task S4.T4: CLI with `extract` and `to-xlsx`
 
 **Files:**
-- Create: `roadmapper/cli.py`, `tests/test_cli.py`
+- Create: `dbe/cli.py`, `tests/test_cli.py`
 
 **Interfaces:**
 - Consumes: `MRWAClient`, `extract`, `NoRoadsFound`, `write_csv`, `write_json`, `csv_to_xlsx`, `schema`.
-- Produces: `def build_parser() -> argparse.ArgumentParser`; `def main(argv: list[str] | None = None) -> int`; `def run_extract(args) -> dict` (returns paths + counts; builds `MRWAClient(cache_dir=args.cache_dir)` via module-level name `MRWAClient` so tests can monkeypatch `roadmapper.cli.MRWAClient`); `def run_to_xlsx(args) -> dict`; output file names inside `--out`: `roads.csv`, `roads_vertices.csv`, `metadata.json`, `roads.xlsx`, `cache/`.
+- Produces: `def build_parser() -> argparse.ArgumentParser`; `def main(argv: list[str] | None = None) -> int`; `def run_extract(args) -> dict` (returns paths + counts; builds `MRWAClient(cache_dir=args.cache_dir)` via module-level name `MRWAClient` so tests can monkeypatch `dbe.cli.MRWAClient`); `def run_to_xlsx(args) -> dict`; output file names inside `--out`: `roads.csv`, `roads_vertices.csv`, `metadata.json`, `roads.xlsx`, `cache/`.
 - `extract` flags: `--lat` (float, required), `--lon` (float, required), `--radius-km` (float, required, > 0), `--out` (default `output/run`), `--cache-dir` (default `<out>/cache`), `--no-xlsx`, `--osm` (accepted; wired in S5.T2), `-v/--verbose`.
 - `to-xlsx` flags: `--roads`, `--vertices`, `--metadata`, `--out` (all required).
 
@@ -2698,7 +2698,7 @@ import json
 
 from openpyxl import load_workbook
 
-from roadmapper import cli, schema
+from dbe import cli, schema
 from tests.conftest import FixtureSource
 
 
@@ -2791,12 +2791,12 @@ def test_negative_radius_rejected(tmp_path):
     assert rc == 2
 ```
 
-- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_cli.py -q` → `ModuleNotFoundError: No module named 'roadmapper.cli'` (or the placeholder from S0.T1 failing every test).
+- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_cli.py -q` → `ModuleNotFoundError: No module named 'dbe.cli'` (or the placeholder from S0.T1 failing every test).
 
 - [ ] **Step 3: Implement**
 
 ```python
-"""Command-line interface: `roadmapper extract …` and `roadmapper to-xlsx …`."""
+"""Command-line interface: `dbe extract …` and `dbe to-xlsx …`."""
 
 from __future__ import annotations
 
@@ -2805,12 +2805,12 @@ import logging
 import sys
 from pathlib import Path
 
-from roadmapper import __version__, schema
-from roadmapper.export import csv_to_xlsx, write_csv, write_json
-from roadmapper.extract import NoRoadsFound, extract
-from roadmapper.mrwa_client import MRWAClient, MRWAError  # MRWAClient is monkeypatched in tests
+from dbe import __version__, schema
+from dbe.export import csv_to_xlsx, write_csv, write_json
+from dbe.extract import NoRoadsFound, extract
+from dbe.mrwa_client import MRWAClient, MRWAError  # MRWAClient is monkeypatched in tests
 
-log = logging.getLogger("roadmapper")
+log = logging.getLogger("dbe")
 
 ROADS_CSV = "roads.csv"
 VERTICES_CSV = "roads_vertices.csv"
@@ -2827,9 +2827,9 @@ def _positive(value: str) -> float:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="roadmapper", description="Roads inside a circle, from Main Roads WA open data."
+        prog="dbe", description="Roads inside a circle, from Main Roads WA open data."
     )
-    p.add_argument("--version", action="version", version=f"roadmapper {__version__}")
+    p.add_argument("--version", action="version", version=f"dbe {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
 
     ex = sub.add_parser(
@@ -2914,9 +2914,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 ```
 
-- [ ] **Step 4: Run** — `uv run pytest -q && uv run ruff check .` → all tests pass (`5` new), clean. Also `uv run roadmapper --help` prints usage.
+- [ ] **Step 4: Run** — `uv run pytest -q && uv run ruff check .` → all tests pass (`5` new), clean. Also `uv run dbe --help` prints usage.
 
-- [ ] **Step 5: Commit** — `git add roadmapper/cli.py tests/test_cli.py && git commit -m "feat(cli): extract and to-xlsx subcommands"`
+- [ ] **Step 5: Commit** — `git add dbe/cli.py tests/test_cli.py && git commit -m "feat(cli): extract and to-xlsx subcommands"`
 
 ---
 
@@ -2931,7 +2931,7 @@ def main(argv: list[str] | None = None) -> int:
 
 - [ ] **Step 1: Run the real extraction** (internet; 5–20 minutes depending on paging)
 
-Run: `uv run roadmapper extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km -v 2>&1 | tee output/curtin_10km_run.log`
+Run: `uv run dbe extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km -v 2>&1 | tee output/curtin_10km_run.log`
 Expected: exit 0; log shows paging for layer 17 (several pages of 2000) and non-zero counts for layers 12/16/8; `metadata.json` values inside §3.8 ranges. If any red flag in §3.8 fires, stop and write it to `progress.md` → Blockers with the metadata values; do not "fix" numbers by changing the plan.
 
 - [ ] **Step 2: Write the reconciliation test**
@@ -2944,7 +2944,7 @@ from pathlib import Path
 
 import pytest
 
-from roadmapper import schema
+from dbe import schema
 
 PROVIDED = Path("data/Road_Network - Road_Network.csv")
 EXTRACTED = Path("output/curtin_10km/roads.csv")
@@ -3010,7 +3010,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import pandas as pd  # noqa: E402
 from shapely import wkt  # noqa: E402
 
-from roadmapper.geometry import LocalProjection  # noqa: E402
+from dbe.geometry import LocalProjection  # noqa: E402
 
 # Colours are the validated default palette of the dataviz skill, checked with its validator in
 # `--pairs all` mode. On a map any road type can sit beside any other, so every pair must stay
@@ -3100,7 +3100,7 @@ def main() -> int:
     ax.set_xlabel("longitude")
     ax.set_ylabel("latitude")
     ax.set_title(
-        f"RoadMapper — {meta['segments_intersecting']} segments, extracted {meta['extracted_at_utc']}"
+        f"DBE — {meta['segments_intersecting']} segments, extracted {meta['extracted_at_utc']}"
     )
     ax.legend(loc="lower left", fontsize=8, frameon=True)
     fig.tight_layout()
@@ -3115,7 +3115,7 @@ if __name__ == "__main__":
 ```
 
 > **Superseded 2026-09-23 — the rendering moved into the package.** At the user's request `extract` now writes
-> the map automatically, so the drawing code below now lives in `roadmapper/plot.py` as `render_qa_plot()`, and
+> the map automatically, so the drawing code below now lives in `dbe/plot.py` as `render_qa_plot()`, and
 > `scripts/qa_plot.py` is a thin wrapper for re-rendering an existing output directory. The package version also
 > uses `matplotlib.figure.Figure` rather than `pyplot` (no global backend state in library code), and one
 > `LineCollection` per road type rather than one `ax.plot` call per segment — 8.6 s down to about 2 s on the
@@ -3168,14 +3168,14 @@ double-weighted 10 widths by 0.07–0.58 m; fixed in `4d2ebf5`.
 
 Checklist for the Opus reviewer:
 1. `uv run pytest -q` all pass; `uv run ruff check .` clean; `uv run pytest tests/test_reconcile_csv.py -q -s` passes with ratio ≥ 0.95 (paste the printed line).
-2. Re-run the extraction yourself from cache (fast): `uv run roadmapper extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km` — it must reproduce the same `segments_intersecting`.
+2. Re-run the extraction yourself from cache (fast): `uv run dbe extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km` — it must reproduce the same `segments_intersecting`.
 3. Every §3.8 sanity range: list each with the observed value and ✅/❌. Any ❌ is a FAIL unless a Decisions-log entry explains why the range, not the code, was wrong.
 4. Open `output/curtin_10km/qa_plot.png` and describe what you see in the Gate log (street grid fills the circle; river gap; red State Roads on the known highways; segments overhang the circle).
 5. Open `roads.xlsx` sheet list and header; confirm `roads` header == `schema.OUTPUT_COLUMNS`, `vertices` header == `schema.VERTEX_COLUMNS`, `metadata` sheet present; confirm the XLSX was produced from the CSV (code path `csv_to_xlsx` reads the CSV files — not in-memory rows).
 6. Spot-check in `roads.csv`: Kent St, Manning Rd, Hayman Rd exist with `NETWORK_TYPE = Local Road`, `WIDTH_SOURCE = none`, non-empty `ROAD_HIERARCHY`; Leach Hwy and Albany Hwy rows have `WIDTH_SOURCE = mrwa_pavement` and plausible `WIDTH_M` (6–25 m) and `NO_OF_LANES` (1–4 per carriageway).
 7. Read `extract.py` for: duplicate handling before the geometry check (so a duplicate with null geometry is counted once), rows built strictly from `schema.OUTPUT_COLUMNS`, `with_osm` accepted but inert.
 8. Read `export.py`: `csv_to_xlsx` never touches `ExtractResult`; ID columns stay text; row-split and truncation guards tested.
-9. Constraints §1: no `data/` read outside `tests/test_reconcile_csv.py` (`grep -rn "Road_Network" roadmapper/` must be empty); no new dependencies.
+9. Constraints §1: no `data/` read outside `tests/test_reconcile_csv.py` (`grep -rn "Road_Network" dbe/` must be empty); no new dependencies.
 10. `progress.md`: S3.T1–S4.T5 `done` with SHAs; Verification log has the e2e counts, reconciliation line and XLSX sheet counts.
 
 Verdict → `progress.md` → Gate log. On PASS the **mandatory deliverable is complete**; Segments 5–6 add optional enrichment and documentation.
@@ -3272,7 +3272,7 @@ letting the user discover it by sorting the column.
 ### Task S5.T1: Overpass client
 
 **Files:**
-- Create: `roadmapper/osm_client.py`, `tests/test_osm_client.py`
+- Create: `dbe/osm_client.py`, `tests/test_osm_client.py`
 
 **Interfaces:**
 - Produces: `OVERPASS_URL = "https://overpass-api.de/api/interpreter"`, `OVERPASS_MIRRORS = ["https://overpass.kumi.systems/api/interpreter"]`; `@dataclass(frozen=True) class OsmWay:` `id: int, tags: dict[str, str], coords: tuple[tuple[float, float], ...]` (lon, lat pairs — same axis order as shapely); `def build_query(lat: float, lon: float, radius_m: float, timeout_s: int = 180) -> str`; `def parse_overpass(payload: dict) -> list[OsmWay]` (skips ways without `geometry`); `def fetch_highways(lat, lon, radius_m, session=None, endpoints: list[str] | None = None, timeout_s: int = 180, sleep_s: float = 1.0) -> list[OsmWay]` — POST `data={"data": query}` with `User-Agent`; on HTTP 429/504 or connection error wait `sleep_s * 30` then try the next endpoint; raise `OsmError(RuntimeError)` after all endpoints fail.
@@ -3283,7 +3283,7 @@ letting the user discover it by sorting the column.
 import pytest
 import requests
 
-from roadmapper.osm_client import OsmError, OsmWay, build_query, fetch_highways, parse_overpass
+from dbe.osm_client import OsmError, OsmWay, build_query, fetch_highways, parse_overpass
 
 
 class FakeResponse:
@@ -3362,7 +3362,7 @@ log = logging.getLogger(__name__)
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 OVERPASS_MIRRORS = ["https://overpass.kumi.systems/api/interpreter"]
-USER_AGENT = "RoadMapper/0.1 (research tool; https://github.com/habibaarashid)"
+USER_AGENT = "DBE/0.1 (research tool; https://github.com/habibaarashid)"
 RETRY_STATUS = {429, 502, 503, 504}
 
 
@@ -3416,17 +3416,17 @@ def fetch_highways(lat: float, lon: float, radius_m: float, session: Any | None 
     raise OsmError(f"all Overpass endpoints failed: {last}")
 ```
 
-- [ ] **Step 4: Run** — `uv run pytest tests/test_osm_client.py -q && uv run ruff check roadmapper tests` → `4 passed`, clean.
+- [ ] **Step 4: Run** — `uv run pytest tests/test_osm_client.py -q && uv run ruff check dbe tests` → `4 passed`, clean.
 
-- [ ] **Step 5: Commit** — `git add roadmapper/osm_client.py tests/test_osm_client.py && git commit -m "feat(osm): Overpass client with mirror fallback"`
+- [ ] **Step 5: Commit** — `git add dbe/osm_client.py tests/test_osm_client.py && git commit -m "feat(osm): Overpass client with mirror fallback"`
 
 ---
 
 ### Task S5.T2: Match OSM ways to MRWA segments and wire `--osm`
 
 **Files:**
-- Create: `roadmapper/osm_match.py`, `tests/test_osm_match.py`
-- Modify: `roadmapper/extract.py` (the `with_osm` branch), `tests/test_extract.py` (append one test)
+- Create: `dbe/osm_match.py`, `tests/test_osm_match.py`
+- Modify: `dbe/extract.py` (the `with_osm` branch), `tests/test_extract.py` (append one test)
 
 **Interfaces:**
 - Consumes: `OsmWay`, `fetch_highways`; `LocalProjection`; `schema.OSM_COLUMNS`, `schema.OSM_ATTRIBUTION`.
@@ -3436,16 +3436,16 @@ def fetch_highways(lat: float, lon: float, radius_m: float, session: Any | None 
   - `def parse_width_m(value: str | None) -> float | None` (accepts `"7.5"`, `"7.5 m"`, `"7,5"`; None otherwise)
   - `class OsmMatcher:` `__init__(self, ways: list[OsmWay], proj: LocalProjection, buffer_m: float = 15.0, min_share: float = 0.5)`; `match(self, road_name: str | None, geom_wgs84) -> OsmWay | None` — candidates are ways whose normalised name equals the segment's normalised `ROAD_NAME` (empty names never match); choose the candidate maximising the length of the segment that lies within `buffer_m` of the way (in local metres); require that share ≥ `min_share`.
   - `def osm_columns_for(way: OsmWay | None) -> dict` → the five `OSM_COLUMNS` (`OSM_WAY_ID` int, others tag strings or None).
-  - In `extract.py`: when `with_osm` is True, after the MRWA rows are built, call `fetch_highways(lat, lon, radius_m + 200)`, build `OsmMatcher`, and for every row set the OSM columns; if `row["WIDTH_M"] is None` and `parse_width_m(tags.get("width"))` is not None → set `WIDTH_M` (rounded 2 dp) and `WIDTH_SOURCE = "osm"`. Set `metadata["osm_enabled"] = True`, `metadata["osm_attribution"] = schema.OSM_ATTRIBUTION`, `metadata["osm_ways_fetched"]`, `metadata["osm_matched_segments"]`, and recompute `width_source_counts`. The fetch function must be referenced as a module attribute (`from roadmapper import osm_client` … `osm_client.fetch_highways(...)`) so tests can monkeypatch it.
+  - In `extract.py`: when `with_osm` is True, after the MRWA rows are built, call `fetch_highways(lat, lon, radius_m + 200)`, build `OsmMatcher`, and for every row set the OSM columns; if `row["WIDTH_M"] is None` and `parse_width_m(tags.get("width"))` is not None → set `WIDTH_M` (rounded 2 dp) and `WIDTH_SOURCE = "osm"`. Set `metadata["osm_enabled"] = True`, `metadata["osm_attribution"] = schema.OSM_ATTRIBUTION`, `metadata["osm_ways_fetched"]`, `metadata["osm_matched_segments"]`, and recompute `width_source_counts`. The fetch function must be referenced as a module attribute (`from dbe import osm_client` … `osm_client.fetch_highways(...)`) so tests can monkeypatch it.
 
 - [ ] **Step 1: Write the failing tests**
 
 ```python
 from shapely.geometry import LineString
 
-from roadmapper.geometry import LocalProjection
-from roadmapper.osm_client import OsmWay
-from roadmapper.osm_match import OsmMatcher, normalise_name, osm_columns_for, parse_width_m
+from dbe.geometry import LocalProjection
+from dbe.osm_client import OsmWay
+from dbe.osm_match import OsmMatcher, normalise_name, osm_columns_for, parse_width_m
 
 CURTIN = (-32.0018629, 115.8924599)
 
@@ -3502,8 +3502,8 @@ Append to `tests/test_extract.py`:
 def test_with_osm_fills_width_only_where_missing(fixture_source, curtin_2400, monkeypatch):
     from shapely import wkt
 
-    from roadmapper import extract as extract_mod
-    from roadmapper.osm_client import OsmWay
+    from dbe import extract as extract_mod
+    from dbe.osm_client import OsmWay
 
     base = extract(source=fixture_source, **curtin_2400)
     local = next(r for r in base.roads if r["WIDTH_SOURCE"] == "none" and r["ROAD_NAME"])
@@ -3526,7 +3526,7 @@ def test_with_osm_fills_width_only_where_missing(fixture_source, curtin_2400, mo
     assert res.metadata["width_source_counts"].get("osm", 0) >= 1
 ```
 
-- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_osm_match.py tests/test_extract.py -q` → `ModuleNotFoundError` / `AttributeError: module 'roadmapper.extract' has no attribute 'osm_client'`
+- [ ] **Step 2: Run to verify failure** — `uv run pytest tests/test_osm_match.py tests/test_extract.py -q` → `ModuleNotFoundError` / `AttributeError: module 'dbe.extract' has no attribute 'osm_client'`
 
 - [ ] **Step 3: Implement `osm_match.py`**
 
@@ -3539,8 +3539,8 @@ from collections import defaultdict
 
 from shapely.geometry import LineString
 
-from roadmapper.geometry import LocalProjection
-from roadmapper.osm_client import OsmWay
+from dbe.geometry import LocalProjection
+from dbe.osm_client import OsmWay
 
 ABBREVIATIONS: dict[str, str] = {
     "rd": "road", "st": "street", "hwy": "highway", "ave": "avenue", "av": "avenue", "dr": "drive", "pl": "place",
@@ -3600,7 +3600,7 @@ class OsmMatcher:
         return best if best_share >= self.min_share else None
 ```
 
-- [ ] **Step 4: Wire `with_osm` in `extract.py`** — add `from roadmapper import osm_client` and `from roadmapper.osm_match import OsmMatcher, osm_columns_for, parse_width_m` at the top; keep a `geoms: dict[oid, geom]` map while building rows; then, before sorting:
+- [ ] **Step 4: Wire `with_osm` in `extract.py`** — add `from dbe import osm_client` and `from dbe.osm_match import OsmMatcher, osm_columns_for, parse_width_m` at the top; keep a `geoms: dict[oid, geom]` map while building rows; then, before sorting:
 
 ```python
     osm_ways_fetched = osm_matched = 0
@@ -3622,9 +3622,9 @@ class OsmMatcher:
 
 and extend `metadata` with `"osm_ways_fetched": osm_ways_fetched, "osm_matched_segments": osm_matched`, set `"osm_attribution": schema.OSM_ATTRIBUTION if with_osm else None`, and compute `width_source_counts` **after** this block.
 
-- [ ] **Step 5: Run** — `uv run pytest -q && uv run ruff check .` → all pass (`5` new in osm_match, `1` new in extract), clean. Then one live run: `uv run roadmapper extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km_osm --osm` (Overpass may take 1–3 minutes for 10 km); record `osm_ways_fetched`, `osm_matched_segments` and `width_source_counts` in `progress.md` → Verification log. Honest expectation: `osm` widths on a small percentage of local roads.
+- [ ] **Step 5: Run** — `uv run pytest -q && uv run ruff check .` → all pass (`5` new in osm_match, `1` new in extract), clean. Then one live run: `uv run dbe extract --lat -32.0018629 --lon 115.8924599 --radius-km 10 --out output/curtin_10km_osm --osm` (Overpass may take 1–3 minutes for 10 km); record `osm_ways_fetched`, `osm_matched_segments` and `width_source_counts` in `progress.md` → Verification log. Honest expectation: `osm` widths on a small percentage of local roads.
 
-- [ ] **Step 6: Commit** — `git add roadmapper/osm_match.py roadmapper/extract.py tests/test_osm_match.py tests/test_extract.py && git commit -m "feat(osm): name+proximity matching, --osm fills width only where MRWA has none"`
+- [ ] **Step 6: Commit** — `git add dbe/osm_match.py dbe/extract.py tests/test_osm_match.py tests/test_extract.py && git commit -m "feat(osm): name+proximity matching, --osm fills width only where MRWA has none"`
 
 ---
 
@@ -3655,7 +3655,7 @@ and extend `metadata` with `"osm_ways_fetched": osm_ways_fetched, "osm_matched_s
 ### Task S6.T2: Vault worklog entry and handoff note (Opus)
 
 **Files:**
-- Modify: `/Users/watermenon/Desktop/Repositories/Vault/Vault/05-Projects/RoadMapper/RoadMapper.md` (append under `## Worklog`, newest first; tick the done items under `## Open questions / next`; fill `remote:` if a GitHub remote exists)
+- Modify: `/Users/watermenon/Desktop/Repositories/Vault/Vault/05-Projects/DBE/DBE.md` (append under `## Worklog`, newest first; tick the done items under `## Open questions / next`; fill `remote:` if a GitHub remote exists)
 - Create: `docs/task_docs/handoff_to_fable.md`
 
 - [ ] **Step 1: Read the vault rules first**: `Vault/CLAUDE.md` §13 and `Vault/05-Projects/CLAUDE.md`. Then append one worklog entry:
@@ -3666,10 +3666,10 @@ and extend `metadata` with `"osm_ways_fetched": osm_ways_fetched, "osm_matched_s
 - **Decisions:** <link any new decision note created during the build, or "none beyond [[MRWA ArcGIS Over Google Maps and OSM]]">
 - **Learned:** <real findings from progress.md Decisions log: confirmed field names, paging behaviour, CWY match patterns, OSM match rate>
 - **Next:** Fable end-to-end review; <open items>
-- **Links:** [progress](file:///Users/watermenon/Desktop/Repositories/RoadMapper/docs/task_docs/progress.md) · [e2e record](file:///Users/watermenon/Desktop/Repositories/RoadMapper/docs/task_docs/e2e_curtin_10km.md) · commit <sha>
+- **Links:** [progress](file:///Users/watermenon/Desktop/Repositories/DBE/docs/task_docs/progress.md) · [e2e record](file:///Users/watermenon/Desktop/Repositories/DBE/docs/task_docs/e2e_curtin_10km.md) · commit <sha>
 ```
 
-If a genuinely new architectural decision was made during the build (e.g. a paging fallback became the primary path), create a decision note from `_templates/decision.md` in `05-Projects/RoadMapper/decisions/` with `project: "[[RoadMapper]]"` and link it from the hub's `## Key decisions`. Do not commit the vault.
+If a genuinely new architectural decision was made during the build (e.g. a paging fallback became the primary path), create a decision note from `_templates/decision.md` in `05-Projects/DBE/decisions/` with `project: "[[DBE]]"` and link it from the hub's `## Key decisions`. Do not commit the vault.
 
 - [ ] **Step 2: Write `docs/task_docs/handoff_to_fable.md`**: final commit SHA; `uv run pytest -q` and `ruff` summary lines; the e2e metadata counts; the list of every Decisions-log entry (one line each); anything skipped and why; anything you are not confident about (be specific — Fable will look there first).
 
@@ -3704,8 +3704,8 @@ Fable's review scope, so the orchestrator knows what will be checked:
 
 ## 6. Vault protocol (summary — the vault's own `CLAUDE.md` is the authority)
 
-- Hub: `Vault/05-Projects/RoadMapper/RoadMapper.md` (exists; created 2026-09-22). Append worklog entries newest first, `### DD-MMM-YYYY — title`, with `Did / Decisions / Learned / Next / Links` bullets. Never paste code.
-- Decisions: `Vault/05-Projects/RoadMapper/decisions/<Title Case>.md` from `_templates/decision.md`; `project: "[[RoadMapper]]"`; `> [!important] Decision` callout; link from the hub's `## Key decisions`.
+- Hub: `Vault/05-Projects/DBE/DBE.md` (exists; created 2026-09-22). Append worklog entries newest first, `### DD-MMM-YYYY — title`, with `Did / Decisions / Learned / Next / Links` bullets. Never paste code.
+- Decisions: `Vault/05-Projects/DBE/decisions/<Title Case>.md` from `_templates/decision.md`; `project: "[[DBE]]"`; `> [!important] Decision` callout; link from the hub's `## Key decisions`.
 - Concepts: `Vault/04-Concepts/Linear Referencing.md` exists; extend it rather than duplicating if SLK behaviour is learned.
 - Never commit or push the vault; `obsidian-git` does that while Obsidian is open.
 
