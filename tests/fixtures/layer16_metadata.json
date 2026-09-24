@@ -1,0 +1,885 @@
+{
+  "currentVersion": 10.91,
+  "cimVersion": "2.9.0",
+  "id": 16,
+  "name": "Road Hierarchy",
+  "type": "Feature Layer",
+  "description": "",
+  "geometryType": "esriGeometryPolyline",
+  "sourceSpatialReference": {
+    "wkid": 4283,
+    "latestWkid": 4283,
+    "xyTolerance": 8.983152841195215e-09,
+    "zTolerance": 0.001,
+    "mTolerance": 0.001,
+    "falseX": -400,
+    "falseY": -400,
+    "xyUnits": 999999999.9999999,
+    "falseZ": 0,
+    "zUnits": 1,
+    "falseM": -100000,
+    "mUnits": 10000
+  },
+  "copyrightText": "",
+  "parentLayer": null,
+  "subLayers": [],
+  "minScale": 0,
+  "maxScale": 0,
+  "referenceScale": 0.0,
+  "drawingInfo": {
+    "renderer": {
+      "type": "uniqueValue",
+      "field1": "ROAD_HIERARCHY",
+      "uniqueValueInfos": [
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              0,
+              191,
+              255,
+              255
+            ],
+            "width": 2
+          },
+          "value": "Primary Distributor",
+          "label": "Primary Distributor"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              250,
+              51,
+              18,
+              255
+            ],
+            "width": 1.7
+          },
+          "value": "Regional Distributor",
+          "label": "Regional Distributor"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              56,
+              168,
+              0,
+              255
+            ],
+            "width": 1.7
+          },
+          "value": "Distributor A",
+          "label": "Distributor A"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              0,
+              112,
+              255,
+              255
+            ],
+            "width": 1.7
+          },
+          "value": "Distributor B",
+          "label": "Distributor B"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              171,
+              0,
+              255
+            ],
+            "width": 1.7
+          },
+          "value": "Local Distributor",
+          "label": "Local Distributor"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              178,
+              178,
+              178,
+              255
+            ],
+            "width": 0.35
+          },
+          "value": "Access Road",
+          "label": "Access Road"
+        }
+      ],
+      "fieldDelimiter": ",",
+      "authoringInfo": {
+        "colorRamp": {
+          "type": "multipart",
+          "colorRamps": [
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                122,
+                204,
+                167,
+                255
+              ],
+              "toColor": [
+                122,
+                204,
+                167,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                194,
+                94,
+                247,
+                255
+              ],
+              "toColor": [
+                194,
+                94,
+                247,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                240,
+                101,
+                103,
+                255
+              ],
+              "toColor": [
+                240,
+                101,
+                103,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                61,
+                90,
+                138,
+                255
+              ],
+              "toColor": [
+                61,
+                90,
+                138,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                250,
+                245,
+                95,
+                255
+              ],
+              "toColor": [
+                250,
+                245,
+                95,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                90,
+                237,
+                93,
+                255
+              ],
+              "toColor": [
+                90,
+                237,
+                93,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                145,
+                127,
+                60,
+                255
+              ],
+              "toColor": [
+                145,
+                127,
+                60,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                133,
+                46,
+                121,
+                255
+              ],
+              "toColor": [
+                133,
+                46,
+                121,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                202,
+                156,
+                240,
+                255
+              ],
+              "toColor": [
+                202,
+                156,
+                240,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                147,
+                189,
+                219,
+                255
+              ],
+              "toColor": [
+                147,
+                189,
+                219,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                54,
+                57,
+                153,
+                255
+              ],
+              "toColor": [
+                54,
+                57,
+                153,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                201,
+                131,
+                149,
+                255
+              ],
+              "toColor": [
+                201,
+                131,
+                149,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                85,
+                153,
+                63,
+                255
+              ],
+              "toColor": [
+                85,
+                153,
+                63,
+                255
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "scaleSymbols": true,
+    "transparency": 0,
+    "labelingInfo": [
+      {
+        "labelExpression": "[ROAD_NAME]",
+        "labelPlacement": "esriServerLinePlacementAboveAlong",
+        "textLayout": "followFeature",
+        "deconflictionStrategy": "dynamic",
+        "allowOverrun": true,
+        "repeatLabel": false,
+        "lineConnection": "minimizeLabels",
+        "stackLabel": true,
+        "stackRowLength": 24,
+        "stackAlignment": "dynamic",
+        "removeDuplicates": "none",
+        "where": "(ROAD_HIERARCHY  = 'Primary Distributor' )",
+        "useCodedValues": true,
+        "maxScale": 0,
+        "minScale": 1000000,
+        "name": "Primary Distributor",
+        "priority": 15,
+        "symbol": {
+          "type": "esriTS",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "backgroundColor": null,
+          "borderLineColor": null,
+          "borderLineSize": null,
+          "verticalAlignment": "bottom",
+          "horizontalAlignment": "left",
+          "rightToLeft": false,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "kerning": true,
+          "haloColor": null,
+          "haloSize": null,
+          "font": {
+            "family": "Arial",
+            "size": 9,
+            "style": "normal",
+            "weight": "bold",
+            "decoration": "none"
+          }
+        }
+      },
+      {
+        "labelExpression": "[ROAD_NAME]",
+        "labelPlacement": "esriServerLinePlacementAboveAlong",
+        "textLayout": "followFeature",
+        "deconflictionStrategy": "dynamic",
+        "allowOverrun": true,
+        "repeatLabel": false,
+        "lineConnection": "minimizeLabels",
+        "stackLabel": true,
+        "stackRowLength": 24,
+        "stackAlignment": "dynamic",
+        "removeDuplicates": "none",
+        "where": "(ROAD_HIERARCHY  = 'Regional Distributor' )",
+        "useCodedValues": true,
+        "maxScale": 0,
+        "minScale": 400000,
+        "name": "Regional Distributor",
+        "priority": 16,
+        "symbol": {
+          "type": "esriTS",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "backgroundColor": null,
+          "borderLineColor": null,
+          "borderLineSize": null,
+          "verticalAlignment": "bottom",
+          "horizontalAlignment": "left",
+          "rightToLeft": false,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "kerning": true,
+          "haloColor": null,
+          "haloSize": null,
+          "font": {
+            "family": "Arial",
+            "size": 8,
+            "style": "normal",
+            "weight": "normal",
+            "decoration": "none"
+          }
+        }
+      },
+      {
+        "labelExpression": "[ROAD_NAME]",
+        "labelPlacement": "esriServerLinePlacementAboveAlong",
+        "textLayout": "straight",
+        "deconflictionStrategy": "dynamic",
+        "allowOverrun": true,
+        "repeatLabel": false,
+        "lineConnection": "minimizeLabels",
+        "stackLabel": true,
+        "stackRowLength": 24,
+        "stackAlignment": "dynamic",
+        "removeDuplicates": "none",
+        "where": "(ROAD_HIERARCHY  = 'Distributor A' )",
+        "useCodedValues": true,
+        "maxScale": 0,
+        "minScale": 400000,
+        "name": "Distributor A",
+        "priority": 17,
+        "symbol": {
+          "type": "esriTS",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "backgroundColor": null,
+          "borderLineColor": null,
+          "borderLineSize": null,
+          "verticalAlignment": "bottom",
+          "horizontalAlignment": "left",
+          "rightToLeft": false,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "kerning": true,
+          "haloColor": null,
+          "haloSize": null,
+          "font": {
+            "family": "Arial",
+            "size": 7,
+            "style": "normal",
+            "weight": "normal",
+            "decoration": "none"
+          }
+        }
+      },
+      {
+        "labelExpression": "[ROAD_NAME]",
+        "labelPlacement": "esriServerLinePlacementAboveAlong",
+        "textLayout": "straight",
+        "deconflictionStrategy": "dynamic",
+        "allowOverrun": true,
+        "repeatLabel": false,
+        "lineConnection": "minimizeLabels",
+        "stackLabel": true,
+        "stackRowLength": 24,
+        "stackAlignment": "dynamic",
+        "removeDuplicates": "none",
+        "where": "(ROAD_HIERARCHY  = 'Distributor B' )",
+        "useCodedValues": true,
+        "maxScale": 0,
+        "minScale": 400000,
+        "name": "Distributor B",
+        "priority": 18,
+        "symbol": {
+          "type": "esriTS",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "backgroundColor": null,
+          "borderLineColor": null,
+          "borderLineSize": null,
+          "verticalAlignment": "bottom",
+          "horizontalAlignment": "left",
+          "rightToLeft": false,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "kerning": true,
+          "haloColor": null,
+          "haloSize": null,
+          "font": {
+            "family": "Arial",
+            "size": 7,
+            "style": "normal",
+            "weight": "normal",
+            "decoration": "none"
+          }
+        }
+      },
+      {
+        "labelExpression": "[ROAD_NAME]",
+        "labelPlacement": "esriServerLinePlacementAboveAlong",
+        "textLayout": "straight",
+        "deconflictionStrategy": "dynamic",
+        "allowOverrun": true,
+        "repeatLabel": false,
+        "lineConnection": "minimizeLabels",
+        "stackLabel": true,
+        "stackRowLength": 24,
+        "stackAlignment": "dynamic",
+        "removeDuplicates": "none",
+        "where": "(ROAD_HIERARCHY  = 'Local Distributor' )",
+        "useCodedValues": true,
+        "maxScale": 0,
+        "minScale": 400000,
+        "name": "Local Distributor",
+        "priority": 19,
+        "symbol": {
+          "type": "esriTS",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "backgroundColor": null,
+          "borderLineColor": null,
+          "borderLineSize": null,
+          "verticalAlignment": "bottom",
+          "horizontalAlignment": "left",
+          "rightToLeft": false,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "kerning": true,
+          "haloColor": null,
+          "haloSize": null,
+          "font": {
+            "family": "Arial",
+            "size": 7,
+            "style": "normal",
+            "weight": "normal",
+            "decoration": "none"
+          }
+        }
+      },
+      {
+        "labelExpression": "[ROAD_NAME]",
+        "labelPlacement": "esriServerLinePlacementAboveAlong",
+        "textLayout": "straight",
+        "deconflictionStrategy": "dynamic",
+        "allowOverrun": true,
+        "repeatLabel": false,
+        "lineConnection": "minimizeLabels",
+        "stackLabel": true,
+        "stackRowLength": 24,
+        "stackAlignment": "dynamic",
+        "removeDuplicates": "none",
+        "where": "(ROAD_HIERARCHY  = 'Access Road' )",
+        "useCodedValues": true,
+        "maxScale": 0,
+        "minScale": 100000,
+        "name": "Access Road",
+        "priority": 20,
+        "symbol": {
+          "type": "esriTS",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "backgroundColor": null,
+          "borderLineColor": null,
+          "borderLineSize": null,
+          "verticalAlignment": "bottom",
+          "horizontalAlignment": "center",
+          "rightToLeft": false,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "kerning": true,
+          "haloColor": null,
+          "haloSize": null,
+          "font": {
+            "family": "Arial",
+            "size": 7,
+            "style": "normal",
+            "weight": "normal",
+            "decoration": "none"
+          }
+        }
+      }
+    ]
+  },
+  "defaultVisibility": true,
+  "extent": {
+    "xmin": 96.81832800000007,
+    "ymin": -35.11864299999996,
+    "xmax": 129.09119500000008,
+    "ymax": -10.413104999999973,
+    "spatialReference": {
+      "wkid": 4283,
+      "latestWkid": 4283,
+      "xyTolerance": 8.983152841195215e-09,
+      "zTolerance": 0.001,
+      "mTolerance": 0.001,
+      "falseX": -400,
+      "falseY": -400,
+      "xyUnits": 999999999.9999999,
+      "falseZ": -100000,
+      "zUnits": 10000,
+      "falseM": -100000,
+      "mUnits": 10000
+    }
+  },
+  "hasAttachments": false,
+  "htmlPopupType": "esriServerHTMLPopupTypeNone",
+  "displayField": "ROAD_NAME",
+  "typeIdField": null,
+  "subtypeFieldName": null,
+  "subtypeField": null,
+  "defaultSubtypeCode": null,
+  "fields": [
+    {
+      "name": "ROAD",
+      "type": "esriFieldTypeString",
+      "alias": "ROAD",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "ROAD_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "ROAD_NAME",
+      "length": 240,
+      "domain": null
+    },
+    {
+      "name": "COMMON_USAGE_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "COMMON_USAGE_NAME",
+      "length": 240,
+      "domain": null
+    },
+    {
+      "name": "START_SLK",
+      "type": "esriFieldTypeDouble",
+      "alias": "START_SLK",
+      "domain": null
+    },
+    {
+      "name": "END_SLK",
+      "type": "esriFieldTypeDouble",
+      "alias": "END_SLK",
+      "domain": null
+    },
+    {
+      "name": "CWY",
+      "type": "esriFieldTypeString",
+      "alias": "CWY",
+      "length": 6,
+      "domain": null
+    },
+    {
+      "name": "START_TRUE_DIST",
+      "type": "esriFieldTypeDouble",
+      "alias": "START_TRUE_DIST",
+      "domain": null
+    },
+    {
+      "name": "END_TRUE_DIST",
+      "type": "esriFieldTypeDouble",
+      "alias": "END_TRUE_DIST",
+      "domain": null
+    },
+    {
+      "name": "NETWORK_TYPE",
+      "type": "esriFieldTypeString",
+      "alias": "NETWORK_TYPE",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "RA_NO",
+      "type": "esriFieldTypeString",
+      "alias": "RA_NO",
+      "length": 2,
+      "domain": null
+    },
+    {
+      "name": "RA_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "RA_NAME",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "LG_NO",
+      "type": "esriFieldTypeString",
+      "alias": "LG_NO",
+      "length": 3,
+      "domain": null
+    },
+    {
+      "name": "LG_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "LG_NAME",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "ROAD_HIERARCHY",
+      "type": "esriFieldTypeString",
+      "alias": "ROAD_HIERARCHY",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "ROUTE_NE_ID",
+      "type": "esriFieldTypeDouble",
+      "alias": "ROUTE_NE_ID",
+      "domain": null
+    },
+    {
+      "name": "GEOLOC",
+      "type": "esriFieldTypeGeometry",
+      "alias": "GEOLOC",
+      "domain": null
+    },
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "domain": null
+    },
+    {
+      "name": "GEOLOC.STLength()",
+      "type": "esriFieldTypeDouble",
+      "alias": "GEOLOC.STLength()",
+      "domain": null
+    },
+    {
+      "name": "GlobalID",
+      "type": "esriFieldTypeGlobalID",
+      "alias": "GlobalID",
+      "length": 38,
+      "domain": null
+    }
+  ],
+  "geometryField": {
+    "name": "GEOLOC",
+    "type": "esriFieldTypeGeometry",
+    "alias": "GEOLOC"
+  },
+  "indexes": [
+    {
+      "name": "gdb_ct3_336217",
+      "fields": "OBJECTID",
+      "isAscending": true,
+      "isUnique": false,
+      "description": ""
+    },
+    {
+      "name": "UUID_336217",
+      "fields": "GlobalID",
+      "isAscending": true,
+      "isUnique": true,
+      "description": ""
+    },
+    {
+      "name": "S334566_idx",
+      "fields": "GEOLOC",
+      "isAscending": true,
+      "isUnique": true,
+      "description": ""
+    }
+  ],
+  "subtypes": [],
+  "relationships": [],
+  "canModifyLayer": true,
+  "canScaleSymbols": false,
+  "hasLabels": true,
+  "capabilities": "Map,Query,Data",
+  "maxRecordCount": 2000,
+  "supportsStatistics": true,
+  "supportsExceedsLimitStatistics": true,
+  "supportsAdvancedQueries": true,
+  "hasM": true,
+  "supportedQueryFormats": "JSON, geoJSON, PBF",
+  "isDataVersioned": false,
+  "ownershipBasedAccessControlForFeatures": {
+    "allowOthersToQuery": true
+  },
+  "useStandardizedQueries": true,
+  "supportedSpatialRelationships": [
+    "esriSpatialRelIntersects",
+    "esriSpatialRelContains",
+    "esriSpatialRelCrosses",
+    "esriSpatialRelEnvelopeIntersects",
+    "esriSpatialRelIndexIntersects",
+    "esriSpatialRelOverlaps",
+    "esriSpatialRelTouches",
+    "esriSpatialRelWithin",
+    "esriSpatialRelRelation"
+  ],
+  "advancedQueryCapabilities": {
+    "useStandardizedQueries": true,
+    "supportsStatistics": true,
+    "supportsPercentileStatistics": true,
+    "supportsHavingClause": true,
+    "supportsOrderBy": true,
+    "supportsDistinct": true,
+    "supportsCountDistinct": true,
+    "supportsPagination": true,
+    "supportsLod": false,
+    "supportsQueryWithLodSR": false,
+    "supportsTrueCurve": true,
+    "supportsQueryWithDatumTransformation": true,
+    "supportsReturningQueryExtent": true,
+    "supportsQueryWithDistance": true,
+    "supportsSqlExpression": true,
+    "supportsTimeRelation": true,
+    "supportsSqlFormat": false,
+    "supportsQueryAnalytic": true
+  },
+  "supportsDatumTransformation": true,
+  "advancedQueryAnalyticCapabilities": {
+    "supportsLinearRegression": true,
+    "supportsAsync": false,
+    "supportsPercentileAnalytic": true
+  },
+  "dateFieldsTimeReference": {
+    "timeZone": "W. Australia Standard Time",
+    "respectsDaylightSaving": false
+  },
+  "preferredTimeReference": null,
+  "datesInUnknownTimezone": false,
+  "hasGeometryProperties": true,
+  "geometryProperties": {
+    "shapeLengthFieldName": "GEOLOC.STLength()",
+    "units": "esriDecimalDegrees"
+  },
+  "hasMetadata": true,
+  "isDataArchived": true,
+  "archivingInfo": {
+    "supportsQueryWithHistoricMoment": true,
+    "startArchivingMoment": 1727868051000
+  },
+  "supportsCoordinatesQuantization": true,
+  "supportsDynamicLegends": true
+}

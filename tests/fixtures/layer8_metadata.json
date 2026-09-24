@@ -1,0 +1,704 @@
+{
+  "currentVersion": 10.91,
+  "cimVersion": "2.9.0",
+  "id": 8,
+  "name": "Legal Speed Limit",
+  "type": "Feature Layer",
+  "description": "",
+  "geometryType": "esriGeometryPolyline",
+  "sourceSpatialReference": {
+    "wkid": 4283,
+    "latestWkid": 4283,
+    "xyTolerance": 8.983152841195215e-09,
+    "zTolerance": 0.001,
+    "mTolerance": 0.001,
+    "falseX": -400,
+    "falseY": -400,
+    "xyUnits": 999999999.9999999,
+    "falseZ": 0,
+    "zUnits": 1,
+    "falseM": -100000,
+    "mUnits": 10000
+  },
+  "copyrightText": "",
+  "parentLayer": null,
+  "subLayers": [],
+  "minScale": 0,
+  "maxScale": 0,
+  "referenceScale": 0.0,
+  "drawingInfo": {
+    "renderer": {
+      "type": "uniqueValue",
+      "field1": "SPEED_LIMIT",
+      "defaultSymbol": {
+        "type": "esriSLS",
+        "style": "esriSLSSolid",
+        "color": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "width": 3.4
+      },
+      "defaultLabel": "Gap in Data",
+      "uniqueValueInfos": [
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              255,
+              0,
+              255
+            ],
+            "width": 1.8
+          },
+          "value": "10km/h",
+          "label": "Speed Limit 10 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              255,
+              0,
+              255
+            ],
+            "width": 1.8
+          },
+          "value": "20km/h",
+          "label": "Speed Limit 20 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              255,
+              0,
+              255
+            ],
+            "width": 1.8
+          },
+          "value": "30km/h",
+          "label": "Speed Limit 30 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              255,
+              0,
+              255
+            ],
+            "width": 1.8
+          },
+          "value": "40km/h",
+          "label": "Speed Limit 40 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              212,
+              255,
+              191,
+              255
+            ],
+            "width": 1.8
+          },
+          "value": "50km/h",
+          "label": "Speed Limit 50 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              115,
+              222,
+              255,
+              255
+            ],
+            "width": 2.4
+          },
+          "value": "60km/h",
+          "label": "Speed Limit 60 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              0,
+              196,
+              255
+            ],
+            "width": 2.4
+          },
+          "value": "70km/h",
+          "label": "Speed Limit 70 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              56,
+              168,
+              0,
+              255
+            ],
+            "width": 2.4
+          },
+          "value": "80km/h",
+          "label": "Speed Limit 80 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              171,
+              0,
+              255
+            ],
+            "width": 2.4
+          },
+          "value": "90km/h",
+          "label": "Speed Limit 90 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "width": 2.4
+          },
+          "value": "100km/h",
+          "label": "Speed Limit 100 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              0,
+              92,
+              230,
+              255
+            ],
+            "width": 2.4
+          },
+          "value": "110km/h",
+          "label": "Speed Limit 110 km/h"
+        },
+        {
+          "symbol": {
+            "type": "esriSLS",
+            "style": "esriSLSSolid",
+            "color": [
+              229,
+              229,
+              229,
+              255
+            ],
+            "width": 2
+          },
+          "value": "50km/h applies in built up areas or 110km/h outside built up areas",
+          "label": "Speed Limit: 50 km/h in built up areas or 110 km/h"
+        }
+      ],
+      "fieldDelimiter": ",",
+      "authoringInfo": {
+        "colorRamp": {
+          "type": "multipart",
+          "colorRamps": [
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                235,
+                108,
+                194,
+                255
+              ],
+              "toColor": [
+                235,
+                108,
+                194,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                94,
+                191,
+                67,
+                255
+              ],
+              "toColor": [
+                94,
+                191,
+                67,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                96,
+                205,
+                230,
+                255
+              ],
+              "toColor": [
+                96,
+                205,
+                230,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                158,
+                113,
+                71,
+                255
+              ],
+              "toColor": [
+                158,
+                113,
+                71,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                99,
+                108,
+                235,
+                255
+              ],
+              "toColor": [
+                99,
+                108,
+                235,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                79,
+                94,
+                143,
+                255
+              ],
+              "toColor": [
+                79,
+                94,
+                143,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                93,
+                232,
+                181,
+                255
+              ],
+              "toColor": [
+                93,
+                232,
+                181,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                227,
+                95,
+                106,
+                255
+              ],
+              "toColor": [
+                227,
+                95,
+                106,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                240,
+                203,
+                93,
+                255
+              ],
+              "toColor": [
+                240,
+                203,
+                93,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                135,
+                62,
+                97,
+                255
+              ],
+              "toColor": [
+                135,
+                62,
+                97,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                66,
+                130,
+                77,
+                255
+              ],
+              "toColor": [
+                66,
+                130,
+                77,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                185,
+                146,
+                222,
+                255
+              ],
+              "toColor": [
+                185,
+                146,
+                222,
+                255
+              ]
+            },
+            {
+              "type": "algorithmic",
+              "algorithm": "esriCIELabAlgorithm",
+              "fromColor": [
+                74,
+                124,
+                128,
+                255
+              ],
+              "toColor": [
+                74,
+                124,
+                128,
+                255
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "scaleSymbols": true,
+    "transparency": 0,
+    "labelingInfo": null
+  },
+  "defaultVisibility": true,
+  "extent": {
+    "xmin": 113.40235200000006,
+    "ymin": -35.11864299999996,
+    "xmax": 129.09119500000008,
+    "ymax": -14.431462999999951,
+    "spatialReference": {
+      "wkid": 4283,
+      "latestWkid": 4283,
+      "xyTolerance": 8.983152841195215e-09,
+      "zTolerance": 0.001,
+      "mTolerance": 0.001,
+      "falseX": -400,
+      "falseY": -400,
+      "xyUnits": 999999999.9999999,
+      "falseZ": -100000,
+      "zUnits": 10000,
+      "falseM": -100000,
+      "mUnits": 10000
+    }
+  },
+  "hasAttachments": false,
+  "htmlPopupType": "esriServerHTMLPopupTypeNone",
+  "displayField": "ROAD_NAME",
+  "typeIdField": null,
+  "subtypeFieldName": null,
+  "subtypeField": null,
+  "defaultSubtypeCode": null,
+  "fields": [
+    {
+      "name": "ROAD",
+      "type": "esriFieldTypeString",
+      "alias": "ROAD",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "ROAD_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "ROAD_NAME",
+      "length": 240,
+      "domain": null
+    },
+    {
+      "name": "COMMON_USAGE_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "COMMON_USAGE_NAME",
+      "length": 240,
+      "domain": null
+    },
+    {
+      "name": "START_SLK",
+      "type": "esriFieldTypeDouble",
+      "alias": "START_SLK",
+      "domain": null
+    },
+    {
+      "name": "END_SLK",
+      "type": "esriFieldTypeDouble",
+      "alias": "END_SLK",
+      "domain": null
+    },
+    {
+      "name": "CWY",
+      "type": "esriFieldTypeString",
+      "alias": "CWY",
+      "length": 6,
+      "domain": null
+    },
+    {
+      "name": "START_TRUE_DIST",
+      "type": "esriFieldTypeDouble",
+      "alias": "START_TRUE_DIST",
+      "domain": null
+    },
+    {
+      "name": "END_TRUE_DIST",
+      "type": "esriFieldTypeDouble",
+      "alias": "END_TRUE_DIST",
+      "domain": null
+    },
+    {
+      "name": "NETWORK_TYPE",
+      "type": "esriFieldTypeString",
+      "alias": "NETWORK_TYPE",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "RA_NO",
+      "type": "esriFieldTypeString",
+      "alias": "RA_NO",
+      "length": 2,
+      "domain": null
+    },
+    {
+      "name": "RA_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "RA_NAME",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "LG_NO",
+      "type": "esriFieldTypeString",
+      "alias": "LG_NO",
+      "length": 3,
+      "domain": null
+    },
+    {
+      "name": "LG_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "LG_NAME",
+      "length": 30,
+      "domain": null
+    },
+    {
+      "name": "SPEED_LIMIT",
+      "type": "esriFieldTypeString",
+      "alias": "SPEED_LIMIT",
+      "length": 80,
+      "domain": null
+    },
+    {
+      "name": "ROUTE_NE_ID",
+      "type": "esriFieldTypeDouble",
+      "alias": "ROUTE_NE_ID",
+      "domain": null
+    },
+    {
+      "name": "GEOLOC",
+      "type": "esriFieldTypeGeometry",
+      "alias": "GEOLOC",
+      "domain": null
+    },
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "domain": null
+    },
+    {
+      "name": "GEOLOC.STLength()",
+      "type": "esriFieldTypeDouble",
+      "alias": "GEOLOC.STLength()",
+      "domain": null
+    },
+    {
+      "name": "GlobalID",
+      "type": "esriFieldTypeGlobalID",
+      "alias": "GlobalID",
+      "length": 38,
+      "domain": null
+    }
+  ],
+  "geometryField": {
+    "name": "GEOLOC",
+    "type": "esriFieldTypeGeometry",
+    "alias": "GEOLOC"
+  },
+  "indexes": [
+    {
+      "name": "gdb_ct3_336396",
+      "fields": "OBJECTID",
+      "isAscending": true,
+      "isUnique": false,
+      "description": ""
+    },
+    {
+      "name": "UUID_336396",
+      "fields": "GlobalID",
+      "isAscending": true,
+      "isUnique": true,
+      "description": ""
+    },
+    {
+      "name": "S334741_idx",
+      "fields": "GEOLOC",
+      "isAscending": true,
+      "isUnique": true,
+      "description": ""
+    }
+  ],
+  "subtypes": [],
+  "relationships": [],
+  "canModifyLayer": true,
+  "canScaleSymbols": false,
+  "hasLabels": false,
+  "capabilities": "Map,Query,Data",
+  "maxRecordCount": 2000,
+  "supportsStatistics": true,
+  "supportsExceedsLimitStatistics": true,
+  "supportsAdvancedQueries": true,
+  "hasM": true,
+  "supportedQueryFormats": "JSON, geoJSON, PBF",
+  "isDataVersioned": false,
+  "ownershipBasedAccessControlForFeatures": {
+    "allowOthersToQuery": true
+  },
+  "useStandardizedQueries": true,
+  "supportedSpatialRelationships": [
+    "esriSpatialRelIntersects",
+    "esriSpatialRelContains",
+    "esriSpatialRelCrosses",
+    "esriSpatialRelEnvelopeIntersects",
+    "esriSpatialRelIndexIntersects",
+    "esriSpatialRelOverlaps",
+    "esriSpatialRelTouches",
+    "esriSpatialRelWithin",
+    "esriSpatialRelRelation"
+  ],
+  "advancedQueryCapabilities": {
+    "useStandardizedQueries": true,
+    "supportsStatistics": true,
+    "supportsPercentileStatistics": true,
+    "supportsHavingClause": true,
+    "supportsOrderBy": true,
+    "supportsDistinct": true,
+    "supportsCountDistinct": true,
+    "supportsPagination": true,
+    "supportsLod": false,
+    "supportsQueryWithLodSR": false,
+    "supportsTrueCurve": true,
+    "supportsQueryWithDatumTransformation": true,
+    "supportsReturningQueryExtent": true,
+    "supportsQueryWithDistance": true,
+    "supportsSqlExpression": true,
+    "supportsTimeRelation": true,
+    "supportsSqlFormat": false,
+    "supportsQueryAnalytic": true
+  },
+  "supportsDatumTransformation": true,
+  "advancedQueryAnalyticCapabilities": {
+    "supportsLinearRegression": true,
+    "supportsAsync": false,
+    "supportsPercentileAnalytic": true
+  },
+  "dateFieldsTimeReference": {
+    "timeZone": "W. Australia Standard Time",
+    "respectsDaylightSaving": false
+  },
+  "preferredTimeReference": null,
+  "datesInUnknownTimezone": false,
+  "hasGeometryProperties": true,
+  "geometryProperties": {
+    "shapeLengthFieldName": "GEOLOC.STLength()",
+    "units": "esriDecimalDegrees"
+  },
+  "hasMetadata": true,
+  "isDataArchived": true,
+  "archivingInfo": {
+    "supportsQueryWithHistoricMoment": true,
+    "startArchivingMoment": 1727916316000
+  },
+  "supportsCoordinatesQuantization": true,
+  "supportsDynamicLegends": true
+}

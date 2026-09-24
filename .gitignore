@@ -1,0 +1,19 @@
+# large source data and generated outputs (never committed)
+data/
+output/
+cache/
+
+# python / uv
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/
